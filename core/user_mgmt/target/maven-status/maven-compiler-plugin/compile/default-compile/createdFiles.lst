@@ -1,0 +1,8 @@
+com/connecta/tarento/rbp/dao/helper/RegistrationDaoHelper.class
+com/connecta/tarento/rbp/models/AdminRegisterInfo.class
+com/connecta/tarento/RoleBasedPro/AppConfig.class
+com/connecta/tarento/rbp/dao/RegistrationDao$1.class
+com/connecta/tarento/rbp/dao/RegistrationDao.class
+com/connecta/tarento/rbp/service/RegistrationService.class
+com/connecta/tarento/rbp/controller/Registration.class
+com/connecta/tarento/rbp/validation/Validatation.class
