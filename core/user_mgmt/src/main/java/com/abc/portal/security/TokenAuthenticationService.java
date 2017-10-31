@@ -2,12 +2,8 @@ package com.abc.portal.security;
 
 import static java.util.Collections.emptyList;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -19,7 +15,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -53,27 +48,23 @@ class TokenAuthenticationService {
 			} catch (JsonProcessingException e) {
 				e.printStackTrace();
 			}
-			JSONObject jObject = new JSONObject(jsonInString); // json
-			JSONObject data = jObject.getJSONObject("u_info"); // get data object
+			JSONObject jObject = new JSONObject(jsonInString); 
+			JSONObject data = jObject.getJSONObject("u_info"); 
 
 			jsonObject.put("UserInfo", data.getJSONObject("user"));
 
 		} catch (JSONException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		res.setContentType("application/json");
-		// Get the printwriter object from response to write the required json object to
-		// the output stream
+		
 		PrintWriter out;
+		
 		try {
 			out = res.getWriter();
-			// Assuming your json object is **jsonObject**, perform the following, it will
-			// return your json object
 			out.print(jsonObject);
 			out.flush();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -88,8 +79,7 @@ class TokenAuthenticationService {
 					.getSubject();
 
 			if (user != null) {
-				return new UsernamePasswordAuthenticationToken(user, null,
-						(Collection<? extends GrantedAuthority>) emptyList());
+				return new UsernamePasswordAuthenticationToken(user, null,emptyList());
 			} else {
 				throw new RuntimeException("403 Exception");
 			}
@@ -97,13 +87,13 @@ class TokenAuthenticationService {
 		return null;
 	}
 
-	public static String readRequestBody(HttpServletRequest request) throws IOException {
+	/*public static String readRequestBody(HttpServletRequest request) throws IOException {
 		StringBuffer jb = new StringBuffer();
-		/*
+		
 		 * String line = null; try { BufferedReader reader = request.getReader(); while
 		 * ((line = reader.readLine()) != null) jb.append(line); } catch (Exception e) {
 		 * report an error }
-		 */
+		 
 
 		String s = getBody(request);
 
@@ -155,5 +145,5 @@ class TokenAuthenticationService {
 
 		body = stringBuilder.toString();
 		return body;
-	}
+	}*/
 }

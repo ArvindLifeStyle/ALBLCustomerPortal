@@ -7,7 +7,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
@@ -16,7 +15,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Collection;
 import java.util.Collections;
 
 public class JWTAuthTokenFilter extends AbstractAuthenticationProcessingFilter {
@@ -31,7 +29,7 @@ public class JWTAuthTokenFilter extends AbstractAuthenticationProcessingFilter {
 			throws AuthenticationException, IOException, ServletException {
 		LoginRequest creds = new ObjectMapper().readValue(req.getInputStream(), LoginRequest.class);
 		return getAuthenticationManager().authenticate(new UsernamePasswordAuthenticationToken(creds.getUsername(),
-				creds.getPassword(), (Collection<? extends GrantedAuthority>) Collections.emptyList()));
+				creds.getPassword(),Collections.emptyList()));
 	}
 
 	@Override
