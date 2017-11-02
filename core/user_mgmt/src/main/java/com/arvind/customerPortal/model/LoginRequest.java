@@ -2,22 +2,20 @@ package com.arvind.customerPortal.model;
 
 import java.util.Objects;
 
+import javax.validation.constraints.NotNull;
+
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-import io.swagger.annotations.ApiModelProperty;
-
-/**
- * LoginRequest
- */
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2017-10-30T11:47:53.319Z")
-
 public class LoginRequest {
+
 	@JsonProperty("email")
+	@NotNull
 	private String username = null;
 
 	@JsonProperty("password")
+	@NotNull
 	private String password = null;
 
 	/**
@@ -30,6 +28,7 @@ public class LoginRequest {
 
 		ARVIND_BRAND_TEAM("ARVIND BRAND TEAM");
 
+		@NotNull
 		private String value;
 
 		RoleEnum(String value) {
@@ -62,13 +61,6 @@ public class LoginRequest {
 		return this;
 	}
 
-	/**
-	 * email id of the customer
-	 * 
-	 * @return username
-	 **/
-	@ApiModelProperty(example = "cust@arvind.com", value = "email id of the customer")
-
 	public String getUsername() {
 		return username;
 	}
@@ -82,13 +74,6 @@ public class LoginRequest {
 		return this;
 	}
 
-	/**
-	 * Password for the customer.
-	 * 
-	 * @return password
-	 **/
-	@ApiModelProperty(value = "Password for the customer.")
-
 	public String getPassword() {
 		return password;
 	}
@@ -101,13 +86,6 @@ public class LoginRequest {
 		this.role = role;
 		return this;
 	}
-
-	/**
-	 * probable role of the user
-	 * 
-	 * @return role
-	 **/
-	@ApiModelProperty(value = "probable role of the user")
 
 	public RoleEnum getRole() {
 		return role;
