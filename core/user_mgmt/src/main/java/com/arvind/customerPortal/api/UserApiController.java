@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.arvind.customerPortal.Dto.LoginRequestDTO;
+import com.arvind.customerPortal.exceptions.InsufficientAuthoritiesException;
 import com.arvind.customerPortal.exceptions.UserNotFoundException;
 import com.arvind.customerPortal.mapper.LoginRequestToDtoMapper;
 import com.arvind.customerPortal.model.ErrorResult;
@@ -21,6 +22,9 @@ import com.arvind.customerPortal.model.LoginRequest;
 import com.arvind.customerPortal.model.LoginResult;
 import com.arvind.customerPortal.model.SuccessResult;
 import com.arvind.customerPortal.model.UserRegister;
+import com.arvind.customerPortal.security.TokenParser;
+import com.arvind.customerPortal.security.Validator;
+import com.arvind.customerPortal.service.ExternalRegisterService;
 import com.arvind.customerPortal.service.InternalRegisterService;
 import com.arvind.customerPortal.service.LoginService;
 
@@ -39,6 +43,15 @@ public class UserApiController implements UserApi {
 	@Autowired
 	private InternalRegisterService internalRegisterService;
 	
+	@Autowired
+	private ExternalRegisterService externalRegisterService;
+	
+	@Autowired
+	private TokenParser tokenParser;
+	
+	@Autowired
+	private Validator validator;
+	
 	LoginRequestToDtoMapper mapper=new LoginRequestToDtoMapper();
 	LoginRequestDTO loginDto=new LoginRequestDTO();
 	LoginResult loginResult;
@@ -50,8 +63,30 @@ public class UserApiController implements UserApi {
     }
 
     public ResponseEntity<SuccessResult> externalRegistration(@ApiParam(value = "This object contains the email id and password for the new customer." ,required=true )  @Valid @RequestBody UserRegister user,
-        @ApiParam(value = "User Identification Token" ,required=true) @RequestHeader(value="security-token", required=true) String securityToken) {
-        // do some magic!
+        @ApiParam(value = "User Identification Token" ,required=true) @RequestHeader(value="security-token", required=true) String securityToken) throws InsufficientAuthoritiesException {
+    	boolean flag=false;
+    	boolean persistanceFlag;
+        String role=tokenParser.getRole(securityToken);
+        flag=validator.validate(role);
+       if(flag==true)
+       {
+    	   SuccessResult result=new SuccessResult();
+           persistanceFlag=externalRegisterService.register(user);
+           if(persistanceFlag==true)
+           {
+           	result.setMessage("success");
+           }
+           
+           else
+           {
+           	result.setMessage("failure");
+           }
+       }
+       else
+       {
+    	   throw new InsufficientAuthoritiesException();
+       }
+        
         return new ResponseEntity<SuccessResult>(HttpStatus.OK);
     }
 

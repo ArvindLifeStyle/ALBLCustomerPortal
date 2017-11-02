@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.arvind.customerPortal.exceptions.InsufficientAuthoritiesException;
 import com.arvind.customerPortal.exceptions.UserNotFoundException;
 import com.arvind.customerPortal.model.ErrorResult;
 import com.arvind.customerPortal.model.LoginRequest;
@@ -56,7 +57,7 @@ public interface UserApi {
         produces = { "application/json" }, 
         consumes = { "application/json" },
         method = RequestMethod.POST)
-    ResponseEntity<SuccessResult> externalRegistration(@ApiParam(value = "This object contains the email id and password for the new customer." ,required=true )  @Valid @RequestBody UserRegister user,@ApiParam(value = "User Identification Token" ,required=true) @RequestHeader(value="security-token", required=true) String securityToken);
+    ResponseEntity<SuccessResult> externalRegistration(@ApiParam(value = "This object contains the email id and password for the new customer." ,required=true )  @Valid @RequestBody UserRegister user,@ApiParam(value = "User Identification Token" ,required=true) @RequestHeader(value="security-token", required=true) String securityToken) throws InsufficientAuthoritiesException;
 
 
     @ApiOperation(value = "Enterprise internal registration Api", notes = "Enterprise internal registration endpoint", response = SuccessResult.class, tags={ "Enterprise internal registration", })
