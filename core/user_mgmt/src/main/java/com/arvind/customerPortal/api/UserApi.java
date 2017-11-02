@@ -5,16 +5,13 @@
  */
 package com.arvind.customerPortal.api;
 
-import io.swagger.annotations.*;
+import javax.validation.Valid;
+
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestPart;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.arvind.customerPortal.exceptions.InsufficientAuthoritiesException;
 import com.arvind.customerPortal.exceptions.UserNotFoundException;
@@ -24,53 +21,53 @@ import com.arvind.customerPortal.model.LoginResult;
 import com.arvind.customerPortal.model.SuccessResult;
 import com.arvind.customerPortal.model.UserRegister;
 
-import java.util.List;
-import javax.validation.constraints.*;
-import javax.validation.Valid;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
+
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2017-10-30T11:47:53.319Z")
 
 @Api(value = "user", description = "the user API")
 public interface UserApi {
 
-    @ApiOperation(value = "Login Api", notes = "Login endpoint", response = LoginResult.class, tags={ "login", })
-    @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "Success", response = LoginResult.class),
-        @ApiResponse(code = 400, message = "Parameter do not match the expected format", response = ErrorResult.class),
-        @ApiResponse(code = 401, message = "Unauthorized Access", response = ErrorResult.class),
-        @ApiResponse(code = 500, message = "Internal error", response = ErrorResult.class) })
-    
-    @RequestMapping(value = "/user/login",
-        produces = { "application/json" }, 
-        consumes = { "application/json" },
-        method = RequestMethod.POST)
-    ResponseEntity<LoginResult> doLogin(@ApiParam(value = "This object contains the email id and password for the new customer." ,required=true )  @Valid @RequestBody LoginRequest loginRequest) throws UserNotFoundException;
+	@ApiOperation(value = "Login Api", notes = "Login endpoint", response = LoginResult.class, tags = { "login", })
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Success", response = LoginResult.class),
+			@ApiResponse(code = 400, message = "Parameter do not match the expected format", response = ErrorResult.class),
+			@ApiResponse(code = 401, message = "Unauthorized Access", response = ErrorResult.class),
+			@ApiResponse(code = 500, message = "Internal error", response = ErrorResult.class) })
 
+	@RequestMapping(value = "/user/login", produces = { "application/json" }, consumes = {
+			"application/json" }, method = RequestMethod.POST)
+	ResponseEntity<LoginResult> doLogin(
+			@ApiParam(value = "This object contains the email id and password for the new customer.", required = true) @Valid @RequestBody LoginRequest loginRequest)
+			throws UserNotFoundException;
 
-    @ApiOperation(value = "Enterprise external registration Api", notes = "Enterprise external registration Api endpoint", response = SuccessResult.class, tags={ "Enterprise external registration", })
-    @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "Success", response = SuccessResult.class),
-        @ApiResponse(code = 400, message = "Parameter do not match the expected format", response = ErrorResult.class),
-        @ApiResponse(code = 401, message = "Unauthorized Access", response = ErrorResult.class),
-        @ApiResponse(code = 500, message = "Internal error", response = ErrorResult.class) })
-    
-    @RequestMapping(value = "/user/enterprise/external/register",
-        produces = { "application/json" }, 
-        consumes = { "application/json" },
-        method = RequestMethod.POST)
-    ResponseEntity<SuccessResult> externalRegistration(@ApiParam(value = "This object contains the email id and password for the new customer." ,required=true )  @Valid @RequestBody UserRegister user,@ApiParam(value = "User Identification Token" ,required=true) @RequestHeader(value="security-token", required=true) String securityToken) throws InsufficientAuthoritiesException;
+	@ApiOperation(value = "Enterprise external registration Api", notes = "Enterprise external registration Api endpoint", response = SuccessResult.class, tags = {
+			"Enterprise external registration", })
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Success", response = SuccessResult.class),
+			@ApiResponse(code = 400, message = "Parameter do not match the expected format", response = ErrorResult.class),
+			@ApiResponse(code = 401, message = "Unauthorized Access", response = ErrorResult.class),
+			@ApiResponse(code = 500, message = "Internal error", response = ErrorResult.class) })
 
+	@RequestMapping(value = "/user/enterprise/external/register", produces = { "application/json" }, consumes = {
+			"application/json" }, method = RequestMethod.POST)
+	ResponseEntity<SuccessResult> externalRegistration(
+			@ApiParam(value = "This object contains the email id and password for the new customer.", required = true) @Valid @RequestBody UserRegister user,
+			@ApiParam(value = "User Identification Token", required = true) @RequestHeader(value = "security-token", required = true) String securityToken)
+			throws InsufficientAuthoritiesException;
 
-    @ApiOperation(value = "Enterprise internal registration Api", notes = "Enterprise internal registration endpoint", response = SuccessResult.class, tags={ "Enterprise internal registration", })
-    @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "Success", response = SuccessResult.class),
-        @ApiResponse(code = 400, message = "Parameter do not match the expected format", response = ErrorResult.class),
-        @ApiResponse(code = 401, message = "Unauthorized Access", response = ErrorResult.class),
-        @ApiResponse(code = 500, message = "Internal error", response = ErrorResult.class) })
-    
-    @RequestMapping(value = "/user/enterprise/internal/register",
-        produces = { "application/json" }, 
-        consumes = { "application/json" },
-        method = RequestMethod.POST)
-    ResponseEntity<SuccessResult> internalRegistration(@ApiParam(value = "This API onboards enterprises internal user." ,required=true )  @Valid @RequestBody UserRegister user);
+	@ApiOperation(value = "Enterprise internal registration Api", notes = "Enterprise internal registration endpoint", response = SuccessResult.class, tags = {
+			"Enterprise internal registration", })
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Success", response = SuccessResult.class),
+			@ApiResponse(code = 400, message = "Parameter do not match the expected format", response = ErrorResult.class),
+			@ApiResponse(code = 401, message = "Unauthorized Access", response = ErrorResult.class),
+			@ApiResponse(code = 500, message = "Internal error", response = ErrorResult.class) })
+
+	@RequestMapping(value = "/user/enterprise/internal/register", produces = { "application/json" }, consumes = {
+			"application/json" }, method = RequestMethod.POST)
+	ResponseEntity<SuccessResult> internalRegistration(
+			@ApiParam(value = "This API onboards enterprises internal user.", required = true) @Valid @RequestBody UserRegister user);
 
 }

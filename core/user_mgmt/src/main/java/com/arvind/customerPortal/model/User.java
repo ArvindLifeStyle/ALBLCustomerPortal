@@ -1,5 +1,6 @@
 package com.arvind.customerPortal.model;
 
+import java.util.Date;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.arvind.customerPortal.model.Role;
@@ -7,7 +8,6 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
-import org.joda.time.LocalDate;
 import org.springframework.core.io.Resource;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
@@ -43,7 +43,7 @@ public class User   {
   private Resource resource = null;
 
   @JsonProperty("created")
-  private LocalDate created = null;
+  private Date created = null;
 
   public User nick(String nick) {
     this.nick = nick;
@@ -214,7 +214,7 @@ public class User   {
     this.resource = resource;
   }
 
-  public User created(LocalDate created) {
+  public User created(Date created) {
     this.created = created;
     return this;
   }
@@ -227,11 +227,11 @@ public class User   {
 
   @Valid
 
-  public LocalDate getCreated() {
+  public Date getCreated() {
     return created;
   }
 
-  public void setCreated(LocalDate created) {
+  public void setCreated(Date created) {
     this.created = created;
   }
 

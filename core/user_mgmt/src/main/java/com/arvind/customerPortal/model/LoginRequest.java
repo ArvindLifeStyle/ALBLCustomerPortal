@@ -1,164 +1,160 @@
 package com.arvind.customerPortal.model;
 
 import java.util.Objects;
-import com.fasterxml.jackson.annotation.JsonProperty;
+
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
-import io.swagger.annotations.ApiModel;
+
 import io.swagger.annotations.ApiModelProperty;
-import javax.validation.Valid;
-import javax.validation.constraints.*;
 
 /**
  * LoginRequest
  */
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2017-10-30T11:47:53.319Z")
 
-public class LoginRequest   {
-  @JsonProperty("username")
-  private String username = null;
+public class LoginRequest {
+	@JsonProperty("email")
+	private String username = null;
 
-  @JsonProperty("password")
-  private String password = null;
+	@JsonProperty("password")
+	private String password = null;
 
-  /**
-   * probable role of the user
-   */
-  public enum RoleEnum {
-    ADMIN("ADMIN"),
-    
-    CUSTOMER("CUSTOMER"),
-    
-    ARVIND_BRAND_TEAM("ARVIND BRAND TEAM");
+	/**
+	 * probable role of the user
+	 */
+	public enum RoleEnum {
+		ADMIN("ADMIN"),
 
-    private String value;
+		CUSTOMER("CUSTOMER"),
 
-    RoleEnum(String value) {
-      this.value = value;
-      
-    }
+		ARVIND_BRAND_TEAM("ARVIND BRAND TEAM");
 
-    @Override
-    @JsonValue
-    public String toString() {
-      return String.valueOf(value);
-    }
+		private String value;
 
-    @JsonCreator
-    public static RoleEnum fromValue(String text) {
-      for (RoleEnum b : RoleEnum.values()) {
-        if (String.valueOf(b.value).equals(text)) {
-          return b;
-        }
-      }
-      return null;
-    }
-  }
+		RoleEnum(String value) {
+			this.value = value;
 
-  @JsonProperty("role")
-  private RoleEnum role = null;
+		}
 
-  public LoginRequest username(String username) {
-    this.username = username;
-    return this;
-  }
+		@Override
+		@JsonValue
+		public String toString() {
+			return String.valueOf(value);
+		}
 
-   /**
-   * email id of the customer
-   * @return username
-  **/
-  @ApiModelProperty(example = "cust@arvind.com", value = "email id of the customer")
+		@JsonCreator
+		public static RoleEnum fromValue(String text) {
+			for (RoleEnum b : RoleEnum.values()) {
+				if (String.valueOf(b.value).equals(text)) {
+					return b;
+				}
+			}
+			return null;
+		}
+	}
 
+	@JsonProperty("role")
+	private RoleEnum role = null;
 
-  public String getUsername() {
-    return username;
-  }
+	public LoginRequest username(String username) {
+		this.username = username;
+		return this;
+	}
 
-  public void setUsername(String username) {
-    this.username = username;
-  }
+	/**
+	 * email id of the customer
+	 * 
+	 * @return username
+	 **/
+	@ApiModelProperty(example = "cust@arvind.com", value = "email id of the customer")
 
-  public LoginRequest password(String password) {
-    this.password = password;
-    return this;
-  }
+	public String getUsername() {
+		return username;
+	}
 
-   /**
-   * Password for the customer.
-   * @return password
-  **/
-  @ApiModelProperty(value = "Password for the customer.")
+	public void setUsername(String username) {
+		this.username = username;
+	}
 
+	public LoginRequest password(String password) {
+		this.password = password;
+		return this;
+	}
 
-  public String getPassword() {
-    return password;
-  }
+	/**
+	 * Password for the customer.
+	 * 
+	 * @return password
+	 **/
+	@ApiModelProperty(value = "Password for the customer.")
 
-  public void setPassword(String password) {
-    this.password = password;
-  }
+	public String getPassword() {
+		return password;
+	}
 
-  public LoginRequest role(RoleEnum role) {
-    this.role = role;
-    return this;
-  }
+	public void setPassword(String password) {
+		this.password = password;
+	}
 
-   /**
-   * probable role of the user
-   * @return role
-  **/
-  @ApiModelProperty(value = "probable role of the user")
+	public LoginRequest role(RoleEnum role) {
+		this.role = role;
+		return this;
+	}
 
+	/**
+	 * probable role of the user
+	 * 
+	 * @return role
+	 **/
+	@ApiModelProperty(value = "probable role of the user")
 
-  public RoleEnum getRole() {
-    return role;
-  }
+	public RoleEnum getRole() {
+		return role;
+	}
 
-  public void setRole(RoleEnum role) {
-    this.role = role;
-  }
+	public void setRole(RoleEnum role) {
+		this.role = role;
+	}
 
+	@Override
+	public boolean equals(java.lang.Object o) {
+		if (this == o) {
+			return true;
+		}
+		if (o == null || getClass() != o.getClass()) {
+			return false;
+		}
+		LoginRequest loginRequest = (LoginRequest) o;
+		return Objects.equals(this.username, loginRequest.username)
+				&& Objects.equals(this.password, loginRequest.password) && Objects.equals(this.role, loginRequest.role);
+	}
 
-  @Override
-  public boolean equals(java.lang.Object o) {
-    if (this == o) {
-      return true;
-    }
-    if (o == null || getClass() != o.getClass()) {
-      return false;
-    }
-    LoginRequest loginRequest = (LoginRequest) o;
-    return Objects.equals(this.username, loginRequest.username) &&
-        Objects.equals(this.password, loginRequest.password) &&
-        Objects.equals(this.role, loginRequest.role);
-  }
+	@Override
+	public int hashCode() {
+		return Objects.hash(username, password, role);
+	}
 
-  @Override
-  public int hashCode() {
-    return Objects.hash(username, password, role);
-  }
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("class LoginRequest {\n");
 
-  @Override
-  public String toString() {
-    StringBuilder sb = new StringBuilder();
-    sb.append("class LoginRequest {\n");
-    
-    sb.append("    username: ").append(toIndentedString(username)).append("\n");
-    sb.append("    password: ").append(toIndentedString(password)).append("\n");
-    sb.append("    role: ").append(toIndentedString(role)).append("\n");
-    sb.append("}");
-    return sb.toString();
-  }
+		sb.append("    username: ").append(toIndentedString(username)).append("\n");
+		sb.append("    password: ").append(toIndentedString(password)).append("\n");
+		sb.append("    role: ").append(toIndentedString(role)).append("\n");
+		sb.append("}");
+		return sb.toString();
+	}
 
-  /**
-   * Convert the given object to string with each line indented by 4 spaces
-   * (except the first line).
-   */
-  private String toIndentedString(java.lang.Object o) {
-    if (o == null) {
-      return "null";
-    }
-    return o.toString().replace("\n", "\n    ");
-  }
+	/**
+	 * Convert the given object to string with each line indented by 4 spaces
+	 * (except the first line).
+	 */
+	private String toIndentedString(java.lang.Object o) {
+		if (o == null) {
+			return "null";
+		}
+		return o.toString().replace("\n", "\n    ");
+	}
 }
-
