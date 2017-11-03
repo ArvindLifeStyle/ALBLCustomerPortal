@@ -61,20 +61,6 @@ public class GlobalExceptionHandler {
 		return errorResult;
 	}
 
-	@ExceptionHandler(ResourceNotFoundException.class)
-	public ResponseEntity<ErrorResult> handleResourceNotFoundException(ResourceNotFoundException ex) {
-		errorResult.setCode("Not Found");
-		errorResult.setMessage(ex.getMessage());
-		return new ResponseEntity<ErrorResult>(errorResult, HttpStatus.NOT_FOUND);
-	}
-
-	@ExceptionHandler(NotAuthorizedException.class)
-	public ResponseEntity<ErrorResult> handleNotAuthorizedException(NotAuthorizedException ex) {
-		errorResult.setCode("UNAUTHORIZED");
-		errorResult.setMessage(ex.getMessage());
-		return new ResponseEntity<ErrorResult>(errorResult, HttpStatus.UNAUTHORIZED);
-	}
-
 	@ExceptionHandler(DataNotFoundException.class)
 	public ResponseEntity<ErrorResult> handleDataNotFoundException(DataNotFoundException ex) {
 		errorResult.setCode("Not Found");
