@@ -14,8 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.arvind.customerPortal.exceptions.DataNotFoundException;
 import com.arvind.customerPortal.exceptions.InsufficientAuthoritiesException;
 import com.arvind.customerPortal.exceptions.InsufficientPriviledgesException;
-import com.arvind.customerPortal.exceptions.NotAuthorizedException;
-import com.arvind.customerPortal.exceptions.ResourceNotFoundException;
 import com.arvind.customerPortal.exceptions.UserNotFoundException;
 import com.arvind.customerPortal.model.ErrorResult;
 
