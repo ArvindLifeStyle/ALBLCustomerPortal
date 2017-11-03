@@ -18,5 +18,7 @@ public class InternalRegisterServiceImpl implements InternalRegisterService {
 	public boolean register(UserRegister register) {
 		return internalRegisterDao.registerInternalUser(register);
 	}
+	
+	
 
 }

@@ -1,17 +1,25 @@
 package com.arvind.customerPortal.request.validator;
 
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.arvind.customerPortal.domain.BusUser;
 import com.arvind.customerPortal.exceptions.DataNotFoundException;
 import com.arvind.customerPortal.model.LoginRequest;
 import com.arvind.customerPortal.model.UserRegister;
+import com.arvind.customerPortal.service.LoginService;
 
 @Service
 public class RequestValidatation {
 
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
+	
+	@Autowired
+	private LoginService loginservice;
 
 	public void validateLoginRequest(LoginRequest loginRequest) {
 
@@ -43,6 +51,18 @@ public class RequestValidatation {
 			logger.error("Mandatory field is role");
 			throw new DataNotFoundException("Mandatory field is role");
 		}
+	}
+	
+	
+	public void  isExist(UserRegister userRegister){
+		
+		List<BusUser> list = loginservice.getUserDetails(userRegister.getName());
+		
+		for(BusUser b : list) {
+			if(b.getName().equals(userRegister.getName()) || b.getEmail().equals(userRegister.getEmail()) || b.getPassword().equals(userRegister.getPassword()))
+				throw new DataNotFoundException("Dublicate Details");
+		}
+		
 	}
 	
 

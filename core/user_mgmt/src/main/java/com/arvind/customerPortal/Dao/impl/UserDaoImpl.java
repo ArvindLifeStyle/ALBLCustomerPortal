@@ -60,6 +60,7 @@ public class UserDaoImpl implements UserDao {
 		userList = entityManager.createQuery(getUserQuery, BusUser.class).setParameter(1, loginDto.getUsername())
 				.getResultList();
 
+		if (userList.get(0).getActive().equals("true") && userList.get(0).getVerified().equals("true")) {
 		if ((userList.size() == 1)) {
 			String tempPass = userList.get(0).getPassword();
 
@@ -93,6 +94,17 @@ public class UserDaoImpl implements UserDao {
 			}
 		} else
 			throw new UserNotFoundException();
+		}else {
+			throw new DataNotFoundException("Mandatory Active and Verify user");
+		}
 
+	}
+	
+	public List<BusUser> getUserDetails(String uname) {
+
+		BusUser busUser = new BusUser();
+		List<BusUser> list = entityManager.createQuery("select e FROM BusUser e",BusUser.class).getResultList();
+		
+		return list;
 	}
 }

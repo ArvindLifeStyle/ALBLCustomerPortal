@@ -1,5 +1,7 @@
 package com.arvind.customerPortal.service.impl;
 
+import java.util.List;
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
@@ -12,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.arvind.customerPortal.Dao.UserDao;
 import com.arvind.customerPortal.Dto.LoginRequestDTO;
+import com.arvind.customerPortal.domain.BusUser;
 import com.arvind.customerPortal.exceptions.UserNotFoundException;
 import com.arvind.customerPortal.model.LoginResult;
 
@@ -32,6 +35,13 @@ public class LoginServiceImpl implements com.arvind.customerPortal.service.Login
 		LoginResult loginResult = new LoginResult();
 		loginResult = userDao.getLoginDetails(loginDto);
 		return loginResult;
+	}
+	
+	public List<BusUser> getUserDetails(String uname) {
+		
+		BusUser busUser = new BusUser();
+		return userDao.getUserDetails(uname);
+		
 	}
 
 }

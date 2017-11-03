@@ -65,6 +65,7 @@ public class UserApiController implements UserApi {
 		boolean persistanceFlag;
 		
 		requestValidatation.validateUserRegisterRequest(userRegister);
+		requestValidatation.isExist(userRegister);
 		
 		String role = tokenParser.getRole(securityToken);
 		boolean flag = validator.validate(role);
@@ -94,7 +95,10 @@ public class UserApiController implements UserApi {
 	}
 
 	public ResponseEntity<?> internalRegistration(@Valid @RequestBody UserRegister userRegister, BindingResult errors) {
-		requestValidatation.validateUserRegisterRequest(userRegister);
+		
+		requestValidatation.validateUserRegisterRequest(userRegister);		
+		requestValidatation.isExist(userRegister);		
+		
 		boolean flag = internalRegisterService.register(userRegister);
 		if (flag) {
 			SuccessResult result = new SuccessResult();
