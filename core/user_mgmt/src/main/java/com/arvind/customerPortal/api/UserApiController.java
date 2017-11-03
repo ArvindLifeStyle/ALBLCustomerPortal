@@ -59,8 +59,8 @@ public class UserApiController implements UserApi {
 		return new ResponseEntity<LoginResult>(loginResult, HttpStatus.OK);
 	}
 
-	public ResponseEntity<?> externalRegistration(@Valid @RequestBody UserRegister userRegister,
-			@RequestHeader(value = "security-token", required = true) String securityToken, BindingResult errors)
+	public ResponseEntity<?> externalRegistration(@Valid @RequestBody UserRegister userRegister, BindingResult errors,
+			@RequestHeader(value = "security-token", required = true) String securityToken)
 			throws InsufficientAuthoritiesException {
 		boolean persistanceFlag;
 		

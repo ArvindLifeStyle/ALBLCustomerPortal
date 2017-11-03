@@ -46,7 +46,8 @@ public class ExternalRegisterDaoImpl implements ExternalRegisterDAO {
 	@Override
 	public boolean registerExternalUser(UserRegister user) {
 		BusUser bususer=new BusUser();
-		bususer.setActive("1");
+		bususer.setActive("true");
+		bususer.setVerified("true");
 		bususer.setCreatedDtime(new Date());
 		bususer.setCreatedUser("system");
 		bususer.setEmail(user.getEmail());

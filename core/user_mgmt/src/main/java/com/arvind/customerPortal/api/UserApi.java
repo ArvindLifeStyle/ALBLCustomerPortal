@@ -21,7 +21,7 @@ public interface UserApi {
 	ResponseEntity<LoginResult> doLogin(@Valid @RequestBody LoginRequest loginRequest, BindingResult errors) throws UserNotFoundException;
 
 	@PostMapping(value = "/user/enterprise/external/register", produces = { "application/json" }, consumes = {"application/json" })
-	ResponseEntity<?> externalRegistration(@Valid @RequestBody UserRegister user,@RequestHeader(value = "security-token", required = true) String securityToken, BindingResult errors)
+	ResponseEntity<?> externalRegistration(@Valid @RequestBody UserRegister user, BindingResult errors, @RequestHeader(value = "security-token", required = true) String securityToken)
 			throws InsufficientAuthoritiesException;
 
 	@PostMapping(value = "/user/enterprise/internal/register", produces = { "application/json" }, consumes = {"application/json" })
