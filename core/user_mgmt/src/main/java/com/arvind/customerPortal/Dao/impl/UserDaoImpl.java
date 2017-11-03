@@ -44,7 +44,7 @@ public class UserDaoImpl implements UserDao {
 	private String getUserQuery;
 
 	@Override
-	public LoginResult getLoginDetails(LoginRequestDTO loginDto) throws UserNotFoundException {
+	public LoginResult getLoginDetails(LoginRequestDTO loginDto) throws UserNotFoundException{
 
 		LoginResult logResult = new LoginResult();
 
@@ -71,12 +71,13 @@ public class UserDaoImpl implements UserDao {
 					logResult.setToken(tokenGenerator.generate(loginDto, "secret"));
 
 				});
+				return logResult;
 
 			} else {
 				throw new UserNotFoundException();
 			}
-		}
-		return logResult;
+		} else
+			throw new UserNotFoundException();
 
 	}
 }

@@ -1,6 +1,7 @@
 package com.arvind.customerPortal.model;
 
-public class SuccessResult {
+public class FailureResult {
+
 	private String ok;
 	private Https http$;
 	private String why;
@@ -28,4 +29,5 @@ public class SuccessResult {
 	public void setWhy(String why) {
 		this.why = why;
 	}
+
 }

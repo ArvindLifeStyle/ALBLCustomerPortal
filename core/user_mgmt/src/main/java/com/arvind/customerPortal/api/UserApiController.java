@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 
@@ -13,6 +14,8 @@ import com.arvind.customerPortal.Dto.LoginRequestDTO;
 import com.arvind.customerPortal.exceptions.InsufficientAuthoritiesException;
 import com.arvind.customerPortal.exceptions.UserNotFoundException;
 import com.arvind.customerPortal.mapper.LoginRequestToDtoMapper;
+import com.arvind.customerPortal.model.FailureResult;
+import com.arvind.customerPortal.model.Https;
 import com.arvind.customerPortal.model.LoginRequest;
 import com.arvind.customerPortal.model.LoginResult;
 import com.arvind.customerPortal.model.SuccessResult;
@@ -49,48 +52,67 @@ public class UserApiController implements UserApi {
 	LoginRequestDTO loginDto = new LoginRequestDTO();
 	LoginResult loginResult;
 
-	public ResponseEntity<LoginResult> doLogin(@Valid @RequestBody LoginRequest loginRequest)
-			throws UserNotFoundException {
+	public ResponseEntity<LoginResult> doLogin(@Valid @RequestBody LoginRequest loginRequest, BindingResult errors) throws UserNotFoundException{
 		requestValidatation.validateLoginRequest(loginRequest);
 		loginDto = mapper.mapLogintoDto(loginRequest);
 		loginResult = loginservice.getLoginDetails(loginDto);
 		return new ResponseEntity<LoginResult>(loginResult, HttpStatus.OK);
 	}
 
-	public ResponseEntity<SuccessResult> externalRegistration(@Valid @RequestBody UserRegister user,
-			@RequestHeader(value = "security-token", required = true) String securityToken)
+	public ResponseEntity<?> externalRegistration(@Valid @RequestBody UserRegister userRegister,
+			@RequestHeader(value = "security-token", required = true) String securityToken, BindingResult errors)
 			throws InsufficientAuthoritiesException {
-		boolean flag = false;
 		boolean persistanceFlag;
+		
+		requestValidatation.validateUserRegisterRequest(userRegister);
+		
 		String role = tokenParser.getRole(securityToken);
-		flag = validator.validate(role);
-		if (flag == true) {
-			SuccessResult result = new SuccessResult();
-			persistanceFlag = externalRegisterService.register(user);
-			if (persistanceFlag == true) {
-				result.setMessage("success");
+		boolean flag = validator.validate(role);
+		if (flag) {
+			persistanceFlag = externalRegisterService.register(userRegister);
+			if (persistanceFlag) {
+				SuccessResult result = new SuccessResult();
+				Https http$ = new Https();
+				http$.setStatus((HttpStatus.OK).toString());
+				result.setOk("true");
+				result.setHttp$(http$);
+				result.setWhy("successful registration");
+				return new ResponseEntity<>(result, HttpStatus.OK);
 			} else {
-				result.setMessage("failure");
+				FailureResult failureResult = new FailureResult();
+				Https http$ = new Https();
+				http$.setStatus((HttpStatus.BAD_REQUEST).toString());
+				failureResult.setOk("false");
+				failureResult.setHttp$(http$);
+				failureResult.setWhy("failure registration");
+				return new ResponseEntity<>(failureResult, HttpStatus.BAD_REQUEST);
 			}
 		} else {
 			throw new InsufficientAuthoritiesException();
 		}
 
-		return new ResponseEntity<SuccessResult>(HttpStatus.OK);
 	}
 
-	public ResponseEntity<SuccessResult> internalRegistration(@Valid @RequestBody UserRegister user) {
-		boolean flag;
-		SuccessResult result = new SuccessResult();
-		flag = internalRegisterService.register(user);
-		if (flag == true) {
-			result.setMessage("success");
+	public ResponseEntity<?> internalRegistration(@Valid @RequestBody UserRegister userRegister, BindingResult errors) {
+		requestValidatation.validateUserRegisterRequest(userRegister);
+		boolean flag = internalRegisterService.register(userRegister);
+		if (flag) {
+			SuccessResult result = new SuccessResult();
+			Https http$ = new Https();
+			http$.setStatus((HttpStatus.OK).toString());
+			result.setOk("true");
+			result.setHttp$(http$);
+			result.setWhy("successful registration");
+			return new ResponseEntity<>(result, HttpStatus.OK);
+		} else {
+			FailureResult failureResult = new FailureResult();
+			Https http$ = new Https();
+			http$.setStatus((HttpStatus.BAD_REQUEST).toString());
+			failureResult.setOk("false");
+			failureResult.setHttp$(http$);
+			failureResult.setWhy("failure registration");
+			return new ResponseEntity<>(failureResult, HttpStatus.BAD_REQUEST);
 		}
-
-		else {
-			result.setMessage("failure");
-		}
-		return new ResponseEntity<SuccessResult>(result, HttpStatus.OK);
 	}
 
 }

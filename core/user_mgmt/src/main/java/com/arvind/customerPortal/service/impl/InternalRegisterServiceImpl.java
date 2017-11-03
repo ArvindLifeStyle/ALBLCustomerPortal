@@ -16,9 +16,7 @@ public class InternalRegisterServiceImpl implements InternalRegisterService {
 	private InternalRegisterDAO internalRegisterDao;
 	@Override
 	public boolean register(UserRegister register) {
-		boolean flag;
-		flag=internalRegisterDao.registerInternalUser(register);
-		return flag;
+		return internalRegisterDao.registerInternalUser(register);
 	}
 
 }
