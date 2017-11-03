@@ -10,10 +10,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
+
 import com.arvind.customerPortal.constants.AuthsConstants;
 import com.arvind.customerPortal.domain.BusResource;
 import com.arvind.customerPortal.domain.BusRole;
 import com.arvind.customerPortal.domain.RolesResource;
+import com.arvind.customerPortal.domain.UsersRole;
+
 
 @Component
 public class Validator {
@@ -23,6 +26,8 @@ public class Validator {
 	
 	@Autowired
 	private EntityManager entityManager;
+	
+
 	
 	private boolean auth=false;
 	
@@ -50,7 +55,7 @@ public class Validator {
 				for(int counter:tempIdList)
 				{
 					BusResource tempBusResource=new BusResource();
-					tempBusResource=(BusResource)entityManager.createQuery(resourcesQuery,BusResource.class).setParameter(1,tempIdList.get(counter)).getSingleResult();
+					tempBusResource=(BusResource)entityManager.createQuery(resourcesQuery,BusResource.class).setParameter(1,counter).getSingleResult();
 					resourceList.add(tempBusResource);
 				}
 				resourceList.forEach(resFinalList->{
@@ -64,5 +69,36 @@ public class Validator {
 		}
 		return auth;
 	}
+
+	public boolean hasRole(int userId, String role) {
+		int i=0;
+		String roleIdQuery=env.getProperty("roleFetch.id");
+		List<Integer> roleidList=new ArrayList<Integer>();
+		roleidList=entityManager.createQuery(roleIdQuery,Integer.class).setParameter(1,role).getResultList();
+		
+		List<UsersRole> roleUserList=new ArrayList<UsersRole>();
+		
+			String findHasRole=env.getProperty("userRoleMap");
+			for(int roleid:roleidList)
+			{
+			roleUserList=entityManager.createQuery(findHasRole,UsersRole.class).setParameter(1,userId).setParameter(2, roleid).getResultList();
+			if(roleUserList.size()>0)
+			{
+				i++;
+			}
+			
+			}
+			
+			if(i>0)
+			{
+				return true;
+			}
+		
+		return false;
+	}
+	
+
+	
+	
 
 }

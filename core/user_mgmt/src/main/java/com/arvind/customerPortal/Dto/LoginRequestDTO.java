@@ -5,6 +5,15 @@ public class LoginRequestDTO {
 	private String username;
 	private String password;
 	private String role;
+	private int id;
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
 
 	public String getUsername() {
 		return username;

@@ -18,10 +18,12 @@ import com.arvind.customerPortal.Dto.LoginRequestDTO;
 import com.arvind.customerPortal.domain.BusRole;
 import com.arvind.customerPortal.domain.BusUser;
 import com.arvind.customerPortal.domain.UsersRole;
+import com.arvind.customerPortal.exceptions.DataNotFoundException;
 import com.arvind.customerPortal.exceptions.UserNotFoundException;
 import com.arvind.customerPortal.model.Https;
 import com.arvind.customerPortal.model.LoginResult;
 import com.arvind.customerPortal.security.TokenGenerator;
+import com.arvind.customerPortal.security.Validator;
 
 @Repository
 @PropertySource("classpath:application.properties")
@@ -39,6 +41,9 @@ public class UserDaoImpl implements UserDao {
 
 	@Autowired
 	private TokenGenerator tokenGenerator;
+	
+	@Autowired
+	private Validator validator;
 
 	// private String secret=env.getProperty("secret");
 	private String getUserQuery;
@@ -60,7 +65,10 @@ public class UserDaoImpl implements UserDao {
 
 			if (pwdChecker.matches(loginDto.getPassword(), tempPass)) {
 				userList.forEach(user -> {
-
+					boolean flag=false;
+					flag=validator.hasRole(user.getUserId(),loginDto.getRole());
+					if (flag)
+					{
 					Https http$ = new Https();
 					http$.setStatus((HttpStatus.OK).toString());
 					logResult.setOk("true");
@@ -69,8 +77,15 @@ public class UserDaoImpl implements UserDao {
 					logResult.setUserid(user.getUserId());
 					logResult.setRole(loginDto.getRole());
 					logResult.setToken(tokenGenerator.generate(loginDto, "secret"));
+					}
+					
+					else
+					{
+						throw new DataNotFoundException("Incorrect Role");
+					}
 
 				});
+				
 				return logResult;
 
 			} else {
