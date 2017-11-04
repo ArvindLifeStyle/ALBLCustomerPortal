@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.PropertySource;
@@ -18,6 +19,7 @@ import com.arvind.customerPortal.Dto.LoginRequestDTO;
 import com.arvind.customerPortal.domain.BusRole;
 import com.arvind.customerPortal.domain.BusUser;
 import com.arvind.customerPortal.domain.UsersRole;
+import com.arvind.customerPortal.exceptions.DaoException;
 import com.arvind.customerPortal.exceptions.DataNotFoundException;
 import com.arvind.customerPortal.exceptions.UserNotFoundException;
 import com.arvind.customerPortal.model.Https;
@@ -102,9 +104,17 @@ public class UserDaoImpl implements UserDao {
 	
 	public List<BusUser> getUserDetails(String uname) {
 
-		BusUser busUser = new BusUser();
 		List<BusUser> list = entityManager.createQuery("select e FROM BusUser e",BusUser.class).getResultList();
 		
 		return list;
+	}
+	
+	public Integer getUserByName(String uname) {
+		try {
+		Integer list = entityManager.createQuery("select e.userId FROM BusUser e where name='"+uname+"'",Integer.class).getSingleResult();
+		return list;
+		}catch(DaoException dao) {
+			throw new DaoException("Exception raised while getting User By Name");
+		}
 	}
 }

@@ -1,4 +1,4 @@
-package com.arvind.customerPortal.api;
+package com.arvind.customerPortal.api.controller;
 
 import javax.validation.Valid;
 
@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 
 import com.arvind.customerPortal.Dto.LoginRequestDTO;
+import com.arvind.customerPortal.api.UserApi;
 import com.arvind.customerPortal.exceptions.InsufficientAuthoritiesException;
 import com.arvind.customerPortal.exceptions.UserNotFoundException;
 import com.arvind.customerPortal.mapper.LoginRequestToDtoMapper;
