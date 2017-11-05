@@ -1,0 +1,11 @@
+{
+"store" : {
+	"name":"test",
+	"address":"testAddress",
+	"storeid":"StoreId",
+	"phone": {
+      "number": "9000123456",
+      "cc": "09"
+    }
+}
+}
