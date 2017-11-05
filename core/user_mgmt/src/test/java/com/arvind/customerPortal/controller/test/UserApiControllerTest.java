@@ -143,6 +143,11 @@ public class UserApiControllerTest {
 		//Mockito.doReturn(true).when(testtokenParser.getRole("test"));
 	}
 	*/
+	
+	@Test
+	public void test() {
+		System.out.println("Junit Testing");
+	}
 
 }
 

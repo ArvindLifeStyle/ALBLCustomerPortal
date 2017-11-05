@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.arvind.customerPortal.exceptions.DataNotFoundException;
 import com.arvind.customerPortal.exceptions.InsufficientAuthoritiesException;
+import com.arvind.customerPortal.exceptions.InsufficientAuthoritiesRuntimeException;
 import com.arvind.customerPortal.exceptions.InsufficientPriviledgesException;
 import com.arvind.customerPortal.exceptions.UserNotFoundException;
 import com.arvind.customerPortal.model.ErrorResult;
@@ -64,6 +65,14 @@ public class GlobalExceptionHandler {
 		errorResult.setCode("Not Found");
 		errorResult.setMessage(ex.getMessage());
 		return new ResponseEntity<ErrorResult>(errorResult, HttpStatus.NOT_FOUND);
+	}
+	
+	@ExceptionHandler(InsufficientAuthoritiesRuntimeException.class)
+	public ResponseEntity<ErrorResult> handleDataNotFoundException(InsufficientAuthoritiesRuntimeException ex) {
+		errorResult.setCode("Failure");
+		errorResult.setMessage(ex.getMessage());
+		errorResult.setDescription(ex.getErrorMessage());
+		return new ResponseEntity<ErrorResult>(errorResult, HttpStatus.UNAUTHORIZED);
 	}
 
 }

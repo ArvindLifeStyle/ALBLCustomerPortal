@@ -26,7 +26,11 @@ public class LoginRequest {
 
 		CUSTOMER("CUSTOMER"),
 
-		ARVIND_BRAND_TEAM("ARVIND BRAND TEAM");
+		ARVIND_BRAND_TEAM("ARVIND BRAND TEAM"),
+		
+		INSTITUTION("INSTITUTION"),
+		
+		OFFICE("OFFICE");
 
 		@NotNull
 		private String value;

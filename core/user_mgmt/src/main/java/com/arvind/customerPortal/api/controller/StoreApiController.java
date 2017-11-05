@@ -9,9 +9,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import com.arvind.customerPortal.constants.AuthsConstants;
 import com.arvind.customerPortal.domain.PhoneEntity;
 import com.arvind.customerPortal.domain.StoreEntity;
 import com.arvind.customerPortal.domain.UserstoreEntity;
+import com.arvind.customerPortal.exceptions.InsufficientAuthoritiesRuntimeException;
 import com.arvind.customerPortal.model.Request;
 import com.arvind.customerPortal.model.RequestUserstore;
 import com.arvind.customerPortal.model.ResponseMultiple;
@@ -20,6 +22,8 @@ import com.arvind.customerPortal.model.Status;
 import com.arvind.customerPortal.model.Store;
 import com.arvind.customerPortal.model.Userstore;
 import com.arvind.customerPortal.request.validator.RequestValidatation;
+import com.arvind.customerPortal.security.TokenParser;
+import com.arvind.customerPortal.security.Validator;
 import com.arvind.customerPortal.service.IStoreService;
 
 @Service
@@ -28,15 +32,22 @@ public class StoreApiController {
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	@Autowired
+	private TokenParser tokenParser;
+
+	@Autowired
+	private Validator validator;
+
+	@Autowired
 	private IStoreService iStoreService;
 
 	@Autowired
 	private RequestValidatation requestValidatation;
 
-	public ResponseEntity<?> createStore(Request request) {
+	public ResponseEntity<?> createStore(Request request, String authorization) {
 
 		logger.info("At createStore method in StoreApiController");
 		requestValidatation.validatestoreRequest(request);
+		verififcationUserAuthorizedToAccess(authorization, AuthsConstants.CREATE_STORE);
 
 		StoreEntity StoreEntity = iStoreService.createStore(convertStoreModelToDomain(request.getStore()));
 		try {
@@ -55,8 +66,11 @@ public class StoreApiController {
 
 	}
 
-	public ResponseEntity<?> searchStore(String storename) {
-		ResponseMultiple responseMultiple = new ResponseMultiple();
+	public ResponseEntity<?> searchStore(String storename,String authorization) {
+		logger.info("At searchStore method in StoreApiController");
+		verififcationUserAuthorizedToAccess(authorization, AuthsConstants.SEARCH_STORE);
+
+		ResponseMultiple responseMultiple = new ResponseMultiple();		
 
 		List<Store> storeList = iStoreService.searchStore(storename);
 
@@ -78,7 +92,10 @@ public class StoreApiController {
 
 	}
 
-	public ResponseEntity<?> retrieveStore(String storeId) {
+	public ResponseEntity<?> retrieveStore(String storeId, String authorization) {
+		logger.info("At retrieveStore method in StoreApiController");
+		verififcationUserAuthorizedToAccess(authorization, AuthsConstants.RETRIVE_STORE);
+
 		ResponseSingle responseSingle = new ResponseSingle();
 
 		List<Store> storeList = iStoreService.retrieveStore(storeId);
@@ -100,7 +117,9 @@ public class StoreApiController {
 
 	}
 
-	public ResponseEntity<?> createUserstore(RequestUserstore requestUserstore) {
+	public ResponseEntity<?> createUserstore(RequestUserstore requestUserstore, String authorization) {
+		logger.info("At createUserstore method in StoreApiController");
+		verififcationUserAuthorizedToAccess(authorization, AuthsConstants.CREATE_USERSTORE);
 
 		requestValidatation.validateUserStoreRequest(requestUserstore);
 
@@ -115,7 +134,9 @@ public class StoreApiController {
 
 	}
 
-	public ResponseEntity<?> retriveUserstore(String username) {
+	public ResponseEntity<?> retriveUserstore(String username, String authorization) {
+		logger.info("At createUserstore method in StoreApiController");
+		verififcationUserAuthorizedToAccess(authorization, AuthsConstants.RETRIVE_USERSTORE);
 
 		Integer userid = iStoreService.getUserByName(username);
 
@@ -139,6 +160,18 @@ public class StoreApiController {
 
 			return new ResponseEntity<>(getFailureStatus(), HttpStatus.BAD_REQUEST);
 
+		}
+
+	}
+
+	private void verififcationUserAuthorizedToAccess(String token, String authResource) {
+		logger.info("At verififcationUserAuthorizedToAccess method in StoreApiController");
+		String role = tokenParser.getRole(token);
+		boolean flag = validator.validate(role, authResource);
+
+		if (!flag) {
+			logger.error("Insufficient authorities to perform the action");
+			throw new InsufficientAuthoritiesRuntimeException();
 		}
 
 	}

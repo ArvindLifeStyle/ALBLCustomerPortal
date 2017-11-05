@@ -31,7 +31,7 @@ public class Validator {
 	
 	private boolean auth=false;
 	
-	public boolean validate(String Role)
+	public boolean validate(String Role,String authResource)
 	{
 		
 		String queryRole=env.getProperty("role.fetch");
@@ -59,7 +59,7 @@ public class Validator {
 					resourceList.add(tempBusResource);
 				}
 				resourceList.forEach(resFinalList->{
-					if(resFinalList.getResource().equals(AuthsConstants.USER_REGISTRATION))
+					if(resFinalList.getResource().equals(authResource))
 						auth=true;
 				});
 				

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 
 import com.arvind.customerPortal.Dto.LoginRequestDTO;
 import com.arvind.customerPortal.api.UserApi;
+import com.arvind.customerPortal.constants.AuthsConstants;
 import com.arvind.customerPortal.exceptions.InsufficientAuthoritiesException;
 import com.arvind.customerPortal.exceptions.UserNotFoundException;
 import com.arvind.customerPortal.mapper.LoginRequestToDtoMapper;
@@ -69,7 +70,7 @@ public class UserApiController implements UserApi {
 		requestValidatation.isExist(userRegister);
 		
 		String role = tokenParser.getRole(securityToken);
-		boolean flag = validator.validate(role);
+		boolean flag = validator.validate(role, AuthsConstants.USER_REGISTRATION);
 		if (flag) {
 			persistanceFlag = externalRegisterService.register(userRegister);
 			if (persistanceFlag) {
