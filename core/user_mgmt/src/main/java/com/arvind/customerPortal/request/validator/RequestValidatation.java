@@ -88,7 +88,7 @@ public class RequestValidatation {
 		
 		for(BusUser b : list) {
 			if(b.getName().equals(userRegister.getName()) || b.getEmail().equals(userRegister.getEmail()) || b.getPassword().equals(userRegister.getPassword()))
-				throw new DataNotFoundException("Dublicate Details");
+				throw new DataNotFoundException("User already exists");
 		}
 		
 	}
