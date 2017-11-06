@@ -62,7 +62,7 @@ public class UserApiController implements UserApi {
 	}
 
 	public ResponseEntity<?> externalRegistration(@Valid @RequestBody UserRegister userRegister, BindingResult errors,
-			@RequestHeader(value = "security-token", required = true) String securityToken)
+			@RequestHeader(value = "Authorization", required = true) String securityToken)
 			throws InsufficientAuthoritiesException {
 		boolean persistanceFlag;
 		
