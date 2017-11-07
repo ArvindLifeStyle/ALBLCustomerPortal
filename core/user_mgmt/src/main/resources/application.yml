@@ -9,11 +9,17 @@ spring:
     jackson:
         serialization.indent_output: true
     datasource:
+        #type: com.zaxxer.hikari.HikariDataSource
+        #url: jdbc:mysql://localhost:3306/arvindbrands
+        #name: arvindbrands
+        #username: root
+        #password: root
         type: com.zaxxer.hikari.HikariDataSource
-        url: jdbc:mysql://localhost:3306/arvindbrands
+        url: jdbc:sqlserver://172.16.3.197:1433;databaseName=arvindbrands
         name: arvindbrands
-        username: root
-        password: root
+        username: sa
+        password: arvind123
+        driverClassName: com.microsoft.sqlserver.jdbc.SQLServerDriver
         hikari:
           maximum-pool-size: 10
           minimum-idle: 5
@@ -26,12 +32,14 @@ spring:
         console:
             enabled: false
     jpa:
-        database-platform: org.hibernate.dialect.MySQL5Dialect
-        database: MYSQL
+        database-platform: org.hibernate.dialect.SQLServerDialect
+        database: SQL_SERVER
         show-sql: true
+        generate-ddl: true
         properties:
             hibernate.cache.use_second_level_cache: false
             hibernate.cache.use_query_cache: false
             hibernate.generate_statistics: true
+            #hibernate.ddl-auto: update
             naming:
                 strategy: org.springframework.boot.orm.jpa.hibernate.SpringNamingStrategy
