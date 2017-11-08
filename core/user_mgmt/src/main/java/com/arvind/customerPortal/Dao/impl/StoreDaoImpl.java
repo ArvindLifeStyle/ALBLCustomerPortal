@@ -3,15 +3,11 @@ package com.arvind.customerPortal.Dao.impl;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.PropertySource;
-import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Repository;
 
 import com.arvind.customerPortal.CRUD.IStoreRepo;
@@ -29,8 +25,6 @@ public class StoreDaoImpl implements IStoreDao {
 
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
 
-	@PersistenceContext
-	private EntityManager entityManager;
 
 	@Autowired
 	IStoreRepo iStoreRepo;

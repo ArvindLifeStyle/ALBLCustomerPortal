@@ -1,0 +1,27 @@
+{
+    "status": {
+        "ok": true,
+        "http$": 200,
+        "why": "request successfull"
+    },
+    "stores": [
+        {
+            "name": "auth_store1",
+            "address": "Ts1",
+            "storeid": "9999888",
+            "phone": {
+                "number": "9148628206",
+                "cc": "09"
+            }
+        },
+        {
+            "name": "auth_store2",
+            "address": "Ts2",
+            "storeid": "999900888",
+            "phone": {
+                "number": "9148628206",
+                "cc": "09"
+            }
+        }	
+    ]
+}
