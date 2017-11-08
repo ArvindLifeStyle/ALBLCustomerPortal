@@ -6,7 +6,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import com.arvind.customerPortal.domain.BusUser;
 import com.arvind.customerPortal.exceptions.DataNotFoundException;
 import com.arvind.customerPortal.model.LoginRequest;
