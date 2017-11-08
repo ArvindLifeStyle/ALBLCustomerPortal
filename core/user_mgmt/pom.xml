@@ -22,6 +22,11 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>1.8</java.version>
+		<sonar.core.codeCoveragePlugin>jacoco</sonar.core.codeCoveragePlugin>
+    <sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
+    <sonar.jacoco.reportPath>${project.basedir}/../target/jacoco.exec</sonar.jacoco.reportPath>
+            <sonar-maven-plugin.version>3.0.2</sonar-maven-plugin.version>
+        <sonar.exclusions>src/main/java/com/arvind/customerPortal/api/*.*,src/main/java/com/arvind/customerPortal/commonUtils/*.*,src/main/java/com/arvind/customerPortal/constants/*.*,src/main/java/com/arvind/customerPortal/CRUD/*.*,src/main/java/com/arvind/customerPortal/Dao/*.*,src/main/java/com/arvind/customerPortal/domain/*.*,src/main/java/com/arvind/customerPortal/exceptionHandler/*.*,src/main/java/com/arvind/customerPortal/exceptions/*.*,src/main/java/com/arvind/customerPortal/model/*.*,src/main/java/com/arvind/customerPortal/service/*.*</sonar.exclusions>
 	</properties>
 
 	<dependencies>
@@ -158,6 +163,21 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
+			<plugin>
+            <groupId>org.jacoco</groupId>
+            <artifactId>jacoco-maven-plugin</artifactId>
+            <version>0.7.0.201403182114</version>
+            <executions>
+                <execution>
+                    <goals>
+                        <goal>prepare-agent</goal>
+                    </goals>
+                </execution>
+            </executions>
+            <configuration>
+                <destFile>${sonar.jacoco.reportPath}</destFile>
+            </configuration>
+        </plugin>
 		</plugins>
 	</build>
 
