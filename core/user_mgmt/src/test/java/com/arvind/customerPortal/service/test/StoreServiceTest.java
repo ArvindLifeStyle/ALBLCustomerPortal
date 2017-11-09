@@ -2,6 +2,7 @@ package com.arvind.customerPortal.service.test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
@@ -20,6 +21,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 
 import com.arvind.customerPortal.Dao.IStoreDao;
+import com.arvind.customerPortal.Dao.UserDao;
 import com.arvind.customerPortal.Dao.impl.StoreDaoImpl;
 import com.arvind.customerPortal.domain.PhoneEntity;
 import com.arvind.customerPortal.domain.StoreEntity;
@@ -44,6 +46,9 @@ public class StoreServiceTest {
 	
 	@Mock
 	StoreEntity storeEntity;
+	
+	@Mock
+	private UserDao iUserDao;
 	
 	@Test
 	public void createStore_test() {
@@ -133,6 +138,22 @@ public class StoreServiceTest {
 		boolean result2 = storeServiceImpl.createUserstore(se_null);
 		assertNotNull(result2);
 		assertFalse(result2);
+	}
+	
+	@Test
+	public void getUserByNameTest() {		
+		when(iUserDao.getUserByName(eq("uname"))).thenReturn(1);		
+		int i = storeServiceImpl.getUserByName("uname");
+		assertNotEquals(0, i);
+		assertEquals(1, i);
+	}
+	
+	@Test
+	public void getStoreId() {		
+		when(iStoreDao.getStoreId(any(Integer.class))).thenReturn("Store_Sony");		
+		String str = storeServiceImpl.getStoreId(1);
+		assertNotNull(str);
+		assertEquals("Store_Sony", str);
 	}
 	
 	

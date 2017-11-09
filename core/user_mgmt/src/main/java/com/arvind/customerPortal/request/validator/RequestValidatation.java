@@ -19,6 +19,7 @@ import com.arvind.customerPortal.service.LoginService;
 @Service
 public class RequestValidatation {
 
+	private static final String MANDATORY_FIELD_EMAIL = "Mandatory field is email";
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
 	
 	@Autowired
@@ -29,8 +30,8 @@ public class RequestValidatation {
 		logger.info("At validateLoginRequest method in RequestValidatation");
 		
 		if (null == loginRequest.getUsername() || loginRequest.getUsername().isEmpty()) {
-			logger.error("Mandatory field is email");
-			throw new DataNotFoundException("Mandatory field is email");
+			logger.error(MANDATORY_FIELD_EMAIL);
+			throw new DataNotFoundException(MANDATORY_FIELD_EMAIL);
 		} else if (null == loginRequest.getPassword() || loginRequest.getPassword().isEmpty()) {
 			logger.error("Mandatory field is password");
 			throw new DataNotFoundException("Mandatory field is password");

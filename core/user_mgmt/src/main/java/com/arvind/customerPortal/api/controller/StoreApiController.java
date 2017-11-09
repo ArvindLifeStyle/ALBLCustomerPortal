@@ -53,11 +53,8 @@ public class StoreApiController {
 		try {
 			if (null != StoreEntity) {
 				return new ResponseEntity<>(getSuccessStatus(), HttpStatus.OK);
-
 			} else {
-
 				return new ResponseEntity<>(getFailureStatus(), HttpStatus.BAD_REQUEST);
-
 			}
 		} catch (Exception e) {
 			return new ResponseEntity<>(getFailureStatus(), HttpStatus.BAD_REQUEST);
@@ -167,7 +164,11 @@ public class StoreApiController {
 	private void verififcationUserAuthorizedToAccess(String token, String authResource) {
 		logger.info("At verififcationUserAuthorizedToAccess method in StoreApiController");
 		String role = tokenParser.getRole(token);
-		boolean flag = validator.validate(role, authResource);
+		boolean flag = false;
+		if(null != role) {
+			logger.error("role is : " + role);
+			flag = validator.validate(role, authResource);
+		}
 
 		if (!flag) {
 			logger.error("Insufficient authorities to perform the action");

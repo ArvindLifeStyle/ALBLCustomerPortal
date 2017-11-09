@@ -35,62 +35,50 @@ public class StoreDaoImpl implements IStoreDao {
 	public StoreEntity createStore(StoreEntity store) {
 		logger.info("At createStore method in StoreDaoImpl");
 		
-		try {
 
-			return iStoreRepo.save(store);
-			
-		} catch (DaoException e) {
-			throw new DaoException("DaoException in searchStore");
-		}
+			if(null != iStoreRepo.save(store))
+				return iStoreRepo.save(store);
+			else
+				throw new DaoException("DaoException in searchStore");
 	}
 
 	@Override
 	public List<Store> searchStore(String s) {
 		logger.info("At searchStore method in StoreDaoImpl");
-		try {
-			List<Store> list = new ArrayList<Store>();
-			for (StoreEntity se : iStoreRepo.findByNameLike("" + s +"%")) {
-				Store internalSE = new Store();
-				Phone phoneEntity = new Phone();
-				internalSE.setName(se.getName());
-				internalSE.setAddress(se.getAddress());
-				internalSE.setStoreid(se.getStoreid());
-				phoneEntity.setNumber(se.getPhone().getNumber());
-				phoneEntity.setCc(se.getPhone().getCc());
-				internalSE.setPhone(phoneEntity);
-				System.out.println(se.getAddress());
+		List<Store> list = new ArrayList<>();
+		for (StoreEntity se : iStoreRepo.findByNameLike("" + s + "%")) {
+			Store internalSE = new Store();
+			Phone phoneEntity = new Phone();
+			internalSE.setName(se.getName());
+			internalSE.setAddress(se.getAddress());
+			internalSE.setStoreid(se.getStoreid());
+			phoneEntity.setNumber(se.getPhone().getNumber());
+			phoneEntity.setCc(se.getPhone().getCc());
+			internalSE.setPhone(phoneEntity);
 
-				list.add(internalSE);
-			}
-			return list;
-		} catch (DaoException e) {
-			throw new DaoException("DaoException in searchStore");
+			list.add(internalSE);
 		}
+		return list;
 	}
 
 	@Override
 	public List<Store> retriveStore(String storeid) {
 
 		logger.info("At retriveStore method in StoreDaoImpl");
-		try {
-			List<Store> list = new ArrayList<Store>();
-			for (StoreEntity se : iStoreRepo.findByStoreid(storeid)) {
-				Store internalSE = new Store();
-				Phone phoneEntity = new Phone();
-				internalSE.setName(se.getName());
-				internalSE.setAddress(se.getAddress());
-				internalSE.setStoreid(se.getStoreid());
-				phoneEntity.setNumber(se.getPhone().getNumber());
-				phoneEntity.setCc(se.getPhone().getCc());
-				internalSE.setPhone(phoneEntity);
-				System.out.println(se.getAddress());
+		List<Store> list = new ArrayList<>();
+		for (StoreEntity se : iStoreRepo.findByStoreid(storeid)) {
+			Store internalSE = new Store();
+			Phone phoneEntity = new Phone();
+			internalSE.setName(se.getName());
+			internalSE.setAddress(se.getAddress());
+			internalSE.setStoreid(se.getStoreid());
+			phoneEntity.setNumber(se.getPhone().getNumber());
+			phoneEntity.setCc(se.getPhone().getCc());
+			internalSE.setPhone(phoneEntity);
 
-				list.add(internalSE);
-			}
-			return list;
-		} catch (DaoException e) {
-			throw new DaoException("DaoException in retriveStore");
+			list.add(internalSE);
 		}
+		return list;
 
 	}
 
@@ -99,27 +87,21 @@ public class StoreDaoImpl implements IStoreDao {
 
 		logger.info("At createUserstore method in StoreDaoImpl");
 
-		try {
-			UserstoreEntity list = iUserstoreRepo.save(userstoreEntity);
-			if (null == list)
-				return false;
-			return true;
-		} catch (DaoException e) {
-
+		UserstoreEntity list = iUserstoreRepo.save(userstoreEntity);
+		if (null == list)
 			return false;
-
-		}
+		return true;
 
 	}
 
 	@Override
 	public String getStoreId(int userid) {
 		logger.info("At getStoreId method in StoreDaoImpl");
-		try {
-			return iUserstoreRepo.findByUserId(userid).iterator().next().getStoreId();
-		} catch (DaoException e) {
+		List<UserstoreEntity> useList = iUserstoreRepo.findByUserId(userid);
+		if(useList.isEmpty()) {
 			throw new DaoException("Exception raised while fetching getStoreId");
-		}
+		}else
+			return useList.iterator().next().getStoreId();
 
 	}
 

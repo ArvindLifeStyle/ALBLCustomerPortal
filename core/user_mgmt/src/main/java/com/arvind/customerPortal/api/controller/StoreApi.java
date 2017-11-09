@@ -1,4 +1,4 @@
-package com.arvind.customerPortal.api;
+package com.arvind.customerPortal.api.controller;
 
 import javax.validation.Valid;
 
@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.arvind.customerPortal.api.controller.StoreApiController;
 import com.arvind.customerPortal.model.Request;
 import com.arvind.customerPortal.model.RequestUserstore;
 

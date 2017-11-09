@@ -28,7 +28,7 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.filter.CompositeFilter;
 
-import com.arvind.customerPortal.api.StoreApi;
+import com.arvind.customerPortal.api.controller.StoreApi;
 import com.arvind.customerPortal.api.controller.StoreApiController;
 import com.arvind.customerPortal.model.Phone;
 import com.arvind.customerPortal.model.Request;
@@ -76,16 +76,21 @@ public class StoreApiTest {
 	}
 
 	@Test
-	public void test_search_store() throws Exception {
+	public void test_retrieve_store() throws Exception {
 
-		String pathParam = "auth_";
+		String pathParam = "StoreID";
 		when(storeApiController.searchStore(eq(pathParam), eq("123456")))
 				.thenReturn(Mockito.mock(new ResponseEntity(getSearchResponse(), HttpStatus.OK).getClass()));
+		
+		MvcResult mv = mockMvc
+				.perform(post("/store/retrieve/{id}", pathParam).header("Authorization", "1234567")
+						.contentType(MediaType.APPLICATION_JSON_UTF8).content(""))
+				.andExpect(status().isOk()).andReturn();
 
 	}
 
 	@Test
-	public void test_retrieve_store() throws Exception {
+	public void test_search_store() throws Exception {
 
 		String pathParam = "auth_";
 		when(storeApiController.searchStore(eq(pathParam), eq("123456")))
@@ -113,6 +118,23 @@ public class StoreApiTest {
 				.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON_UTF8))
 				.andExpect(content().json(getFileContents("successres.json")));
 	}
+	
+	
+	@Test
+	public void test_retrieve_userstore() throws Exception {
+
+		String pathParam = "username";
+		when(storeApiController.searchStore(eq(pathParam), eq("123456")))
+				.thenReturn(Mockito.mock(new ResponseEntity(getSearchResponse(), HttpStatus.OK).getClass()));
+		
+		MvcResult mv = mockMvc
+				.perform(post("/userstore/retrieve/{username}", pathParam).header("Authorization", "1234567")
+						.contentType(MediaType.APPLICATION_JSON_UTF8).content(""))
+				.andExpect(status().isOk()).andReturn();
+
+	}
+	
+	
 
 	private Status getSuccessStatus() {
 		Status status = new Status();

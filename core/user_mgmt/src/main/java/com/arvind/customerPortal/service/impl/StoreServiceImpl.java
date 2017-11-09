@@ -28,7 +28,6 @@ public class StoreServiceImpl implements IStoreService{
 	}
 	@Override
 	public List<Store> searchStore(String s) {
-		// TODO Auto-generated method stub
 		return iStoreDao.searchStore(s);
 	}
 	
