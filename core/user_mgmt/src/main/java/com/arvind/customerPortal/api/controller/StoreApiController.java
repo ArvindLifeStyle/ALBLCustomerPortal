@@ -43,46 +43,35 @@ public class StoreApiController {
 	@Autowired
 	private RequestValidatation requestValidatation;
 
-	public ResponseEntity<?> createStore(Request request, String authorization) {
+	public ResponseEntity<? extends Status> createStore(Request request, String authorization) {
 
 		logger.info("At createStore method in StoreApiController");
 		requestValidatation.validatestoreRequest(request);
 		verififcationUserAuthorizedToAccess(authorization, AuthsConstants.CREATE_STORE);
 
 		StoreEntity StoreEntity = iStoreService.createStore(convertStoreModelToDomain(request.getStore()));
-		try {
-			if (null != StoreEntity) {
-				return new ResponseEntity<>(getSuccessStatus(), HttpStatus.OK);
-			} else {
-				return new ResponseEntity<>(getFailureStatus(), HttpStatus.BAD_REQUEST);
-			}
-		} catch (Exception e) {
+		if (null != StoreEntity) {
+			return new ResponseEntity<>(getSuccessStatus(), HttpStatus.OK);
+		} else {
 			return new ResponseEntity<>(getFailureStatus(), HttpStatus.BAD_REQUEST);
-
 		}
 
 	}
 
-	public ResponseEntity<?> searchStore(String storename,String authorization) {
+	public ResponseEntity<?> searchStore(String storename, String authorization) {
 		logger.info("At searchStore method in StoreApiController");
 		verififcationUserAuthorizedToAccess(authorization, AuthsConstants.SEARCH_STORE);
 
-		ResponseMultiple responseMultiple = new ResponseMultiple();		
+		ResponseMultiple responseMultiple = new ResponseMultiple();
 
 		List<Store> storeList = iStoreService.searchStore(storename);
 
-		try {
-			if (null != storeList) {
-				responseMultiple.setStores(storeList);
-				responseMultiple.setStatus(getSuccessStatus());
-				return new ResponseEntity<>(responseMultiple, HttpStatus.OK);
+		if (null != storeList) {
+			responseMultiple.setStores(storeList);
+			responseMultiple.setStatus(getSuccessStatus());
+			return new ResponseEntity<>(responseMultiple, HttpStatus.OK);
 
-			} else {
-				return new ResponseEntity<>(getFailureStatus(), HttpStatus.BAD_REQUEST);
-
-			}
-		} catch (Exception e) {
-
+		} else {
 			return new ResponseEntity<>(getFailureStatus(), HttpStatus.BAD_REQUEST);
 
 		}
@@ -97,17 +86,12 @@ public class StoreApiController {
 
 		List<Store> storeList = iStoreService.retrieveStore(storeId);
 
-		try {
-			if (null != storeList) {
-				responseSingle.setStore(storeList.iterator().next());
-				responseSingle.setStatus(getSuccessStatus());
-				return new ResponseEntity<>(responseSingle, HttpStatus.OK);
+		if (null != storeList) {
+			responseSingle.setStore(storeList.iterator().next());
+			responseSingle.setStatus(getSuccessStatus());
+			return new ResponseEntity<>(responseSingle, HttpStatus.OK);
 
-			} else {
-				return new ResponseEntity<>(getFailureStatus(), HttpStatus.BAD_REQUEST);
-
-			}
-		} catch (Exception e) {
+		} else {
 			return new ResponseEntity<>(getFailureStatus(), HttpStatus.BAD_REQUEST);
 
 		}
@@ -142,18 +126,12 @@ public class StoreApiController {
 
 		ResponseSingle responseSingle = new ResponseSingle();
 
-		try {
-			if (null != storeList) {
-				responseSingle.setStore(storeList.iterator().next());
-				responseSingle.setStatus(getSuccessStatus());
-				return new ResponseEntity<>(responseSingle, HttpStatus.OK);
+		if (null != storeList) {
+			responseSingle.setStore(storeList.iterator().next());
+			responseSingle.setStatus(getSuccessStatus());
+			return new ResponseEntity<>(responseSingle, HttpStatus.OK);
 
-			} else {
-
-				return new ResponseEntity<>(getFailureStatus(), HttpStatus.BAD_REQUEST);
-
-			}
-		} catch (Exception e) {
+		} else {
 
 			return new ResponseEntity<>(getFailureStatus(), HttpStatus.BAD_REQUEST);
 
@@ -165,7 +143,7 @@ public class StoreApiController {
 		logger.info("At verififcationUserAuthorizedToAccess method in StoreApiController");
 		String role = tokenParser.getRole(token);
 		boolean flag = false;
-		if(null != role) {
+		if (null != role) {
 			logger.error("role is : " + role);
 			flag = validator.validate(role, authResource);
 		}
