@@ -27,8 +27,6 @@ public class LoginServiceImpl implements com.arvind.customerPortal.service.Login
 	@Autowired
 	private UserDao userDao;
 
-	@PersistenceContext
-	EntityManager entityManager;
 
 	@Override
 	public LoginResult getLoginDetails(LoginRequestDTO loginDto) throws UserNotFoundException {
@@ -39,7 +37,6 @@ public class LoginServiceImpl implements com.arvind.customerPortal.service.Login
 	
 	public List<BusUser> getUserDetails(String uname) {
 		
-		BusUser busUser = new BusUser();
 		return userDao.getUserDetails(uname);
 		
 	}

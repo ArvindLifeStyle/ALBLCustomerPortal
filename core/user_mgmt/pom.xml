@@ -26,7 +26,7 @@
     <sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
     <sonar.jacoco.reportPath>${project.basedir}/../target/jacoco.exec</sonar.jacoco.reportPath>
             <sonar-maven-plugin.version>3.0.2</sonar-maven-plugin.version>
-        <sonar.exclusions>src/main/java/com/arvind/customerPortal/api/*.*,src/main/java/com/arvind/customerPortal/commonUtils/*.*,src/main/java/com/arvind/customerPortal/constants/*.*,src/main/java/com/arvind/customerPortal/CRUD/*.*,src/main/java/com/arvind/customerPortal/Dao/*.*,src/main/java/com/arvind/customerPortal/domain/*.*,src/main/java/com/arvind/customerPortal/exceptionHandler/*.*,src/main/java/com/arvind/customerPortal/exceptions/*.*,src/main/java/com/arvind/customerPortal/model/*.*,src/main/java/com/arvind/customerPortal/service/*.*</sonar.exclusions>
+        <sonar.exclusions>src/main/java/com/arvind/customerPortal/mapper/LoginRequestToDtoMapper.java,src/main/java/com/arvind/customerPortal/api/*.*,src/main/java/com/arvind/customerPortal/commonUtils/*.*,src/main/java/com/arvind/customerPortal/constants/*.*,src/main/java/com/arvind/customerPortal/CRUD/*.*,src/main/java/com/arvind/customerPortal/Dao/*.*,src/main/java/com/arvind/customerPortal/domain/*.*,src/main/java/com/arvind/customerPortal/exceptionHandler/*.*,src/main/java/com/arvind/customerPortal/exceptions/*.*,src/main/java/com/arvind/customerPortal/model/*.*,src/main/java/com/arvind/customerPortal/service/*.*,src/main/java/com/arvind/customerPortal/CpsUserManagementApplication.java,src/main/java/com/arvind/customerPortal/ServletInitializer.java</sonar.exclusions>
 	</properties>
 
 	<dependencies>
