@@ -20,6 +20,7 @@ import com.arvind.customerPortal.service.LoginService;
 public class RequestValidatation {
 
 	private static final String MANDATORY_FIELD_EMAIL = "Mandatory field is email";
+	private static final String MANDATORY_FIELD_NAME = "Mandatory field is name";
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
 	
 	@Autowired
@@ -56,11 +57,11 @@ public class RequestValidatation {
 		logger.info("At validateUserRegisterRequest method in RequestValidatation");
 
 		if (null == userRegister.getName() || userRegister.getName().isEmpty()) {
-			logger.error("Mandatory field is name");
-			throw new DataNotFoundException("Mandatory field is name");
+			logger.error("MANDATORY_FIELD_NAME");
+			throw new DataNotFoundException("MANDATORY_FIELD_NAME");
 		} else if (null == userRegister.getEmail() || userRegister.getEmail().isEmpty()) {
-				logger.error("Mandatory field is email");
-				throw new DataNotFoundException("Mandatory field is email");
+				logger.error("MANDATORY_FIELD_EMAIL");
+				throw new DataNotFoundException("MANDATORY_FIELD_EMAIL");
 		} else if (null == userRegister.getPassword() || userRegister.getPassword().isEmpty()) {
 			logger.error("Mandatory field is password");
 			throw new DataNotFoundException("Mandatory field is password");
@@ -105,8 +106,8 @@ public class RequestValidatation {
 			throw new DataNotFoundException("Mandatory field is store");
 		} else {
 			if (null == store.getName() || store.getName().isEmpty()) {
-				logger.error("Mandatory field is name");
-				throw new DataNotFoundException("Mandatory field is name");
+				logger.error(MANDATORY_FIELD_NAME);
+				throw new DataNotFoundException(MANDATORY_FIELD_NAME);
 			} else if (null == store.getAddress() || store.getAddress().isEmpty()) {
 				logger.error("Mandatory field is address");
 				throw new DataNotFoundException("Mandatory field is address");

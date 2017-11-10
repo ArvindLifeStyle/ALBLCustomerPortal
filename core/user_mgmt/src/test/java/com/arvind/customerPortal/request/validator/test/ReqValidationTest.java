@@ -35,17 +35,6 @@ public class ReqValidationTest {
 	@Mock
 	LoginService loginservice;
 	
-	public static enum RoleEnum {
-		ADMIN("ADMIN");
-		
-		private String value;
-
-		RoleEnum(String value) {
-			this.value = value;
-
-		}
-	}
-	
 	@Rule
 	public ExpectedException expectedEx = ExpectedException.none();
 	
@@ -65,8 +54,18 @@ public class ReqValidationTest {
 		loginRequest1.setRole(LoginRequest.RoleEnum.ADMIN);
 		
 		requestValidatation.validateLoginRequest(loginRequest1);
-		
-		
+	}
+	
+	@Test
+	public void validateEmptyUserLoginRequest_Test() {
+		expectedEx.expect(DataNotFoundException.class);
+		expectedEx.expectMessage("Mandatory field is email");
+		LoginRequest loginRequest2 =new LoginRequest();
+		loginRequest2.setUsername("");
+		loginRequest2.setPassword("password");
+		loginRequest2.setRole(LoginRequest.RoleEnum.ADMIN);
+
+		requestValidatation.validateLoginRequest(loginRequest2);
 	}
 	
 	@Test
@@ -79,6 +78,17 @@ public class ReqValidationTest {
 		
 		requestValidatation.validateLoginRequest(loginRequest);
 		
+	}
+	
+	@Test
+	public void validateEmptyPasswordLoginRequest_Test() {
+		expectedEx.expect(DataNotFoundException.class);
+		expectedEx.expectMessage("Mandatory field is password");
+		LoginRequest loginRequest =new LoginRequest();
+		loginRequest.setUsername("abc");
+		loginRequest.setPassword("");
+		loginRequest.setRole(LoginRequest.RoleEnum.ADMIN);		
+		requestValidatation.validateLoginRequest(loginRequest);
 	}
 	
 	
@@ -94,7 +104,6 @@ public class ReqValidationTest {
 		
 		
 	}
-	
 	
 	@Test
 	public void validateUserRegisterRequestTest(){
@@ -117,6 +126,20 @@ public class ReqValidationTest {
 		
 	}
 	
+	
+	@Test
+	public void validateEmptyNameUserRegisterRequestTest(){
+		expectedEx.expect(DataNotFoundException.class);
+		expectedEx.expectMessage("Mandatory field is name");
+		UserRegister userRegister = new UserRegister();
+		userRegister.setName("");
+		userRegister.setEmail("email");
+		userRegister.setPassword("password");
+		userRegister.setRole("ADMIN");
+		requestValidatation.validateUserRegisterRequest(userRegister);
+		
+	}
+	
 	@Test
 	public void validateUserRegisterRequestEmailTest(){
 		
@@ -131,6 +154,18 @@ public class ReqValidationTest {
 	}
 	
 	@Test
+	public void validateEmptyEmailUserRegisterRequestTest(){
+		expectedEx.expect(DataNotFoundException.class);
+		expectedEx.expectMessage("Mandatory field is email");
+		UserRegister userRegister = new UserRegister();
+		userRegister.setName("name");
+		userRegister.setEmail("");
+		userRegister.setPassword("password");
+		userRegister.setRole("ADMIN");
+		requestValidatation.validateUserRegisterRequest(userRegister);
+	}
+	
+	@Test
 	public void validateUserRegisterRequestPasswordTest(){
 		
 		expectedEx.expect(DataNotFoundException.class);
@@ -141,6 +176,18 @@ public class ReqValidationTest {
 		userRegister3.setRole("ADMIN");
 		requestValidatation.validateUserRegisterRequest(userRegister3);
 		
+	}
+	
+	@Test
+	public void validateEmptyPasswordUserRegisterRequestTest(){
+		expectedEx.expect(DataNotFoundException.class);
+		expectedEx.expectMessage("Mandatory field is password");
+		UserRegister userRegister = new UserRegister();
+		userRegister.setName("name");
+		userRegister.setEmail("email");
+		userRegister.setPassword("");
+		userRegister.setRole("ADMIN");
+		requestValidatation.validateUserRegisterRequest(userRegister);
 	}
 	
 	@Test
@@ -187,6 +234,26 @@ public class ReqValidationTest {
 	}
 	
 	@Test
+	public void validateEmptyNameStoreRequestTest() {
+		
+		expectedEx.expect(DataNotFoundException.class);
+		expectedEx.expectMessage("Mandatory field is name");
+		
+		Request req = new Request();
+		Store store = new Store();
+		store.setName("");
+		store.setAddress("address");
+		store.setStoreid("storeid");
+		Phone p = new Phone();
+		p.setCc("cc");
+		p.setNumber("number");
+		store.setPhone(p);
+		req.setStore(store);
+		requestValidatation.validatestoreRequest(req);
+		
+	}
+	
+	@Test
 	public void validatestoreRequestAddressTest() {
 		
 		expectedEx.expect(DataNotFoundException.class);
@@ -194,6 +261,27 @@ public class ReqValidationTest {
 		Request req = new Request();
 		Store store = new Store();
 		store.setName("name");
+		store.setStoreid("storeid");
+		Phone p = new Phone();
+		p.setCc("cc");
+		p.setNumber("number");
+		store.setPhone(p);
+		req.setStore(store);
+		requestValidatation.validatestoreRequest(req);
+		
+	}
+	
+	
+	@Test
+	public void validateEmptyAddressStoreRequestTest() {
+		
+		expectedEx.expect(DataNotFoundException.class);
+		expectedEx.expectMessage("Mandatory field is address");
+		
+		Request req = new Request();
+		Store store = new Store();
+		store.setName("name");
+		store.setAddress("");
 		store.setStoreid("storeid");
 		Phone p = new Phone();
 		p.setCc("cc");
@@ -223,6 +311,26 @@ public class ReqValidationTest {
 		
 	}
 	
+	@Test
+	public void validateEmptyStoreIdStoreRequestTest() {
+		
+		expectedEx.expect(DataNotFoundException.class);
+		expectedEx.expectMessage("Mandatory field is storeid");
+		
+		Request req = new Request();
+		Store store = new Store();
+		store.setName("name");
+		store.setAddress("address");
+		store.setStoreid("");
+		Phone p = new Phone();
+		p.setCc("cc");
+		p.setNumber("number");
+		store.setPhone(p);
+		req.setStore(store);
+		requestValidatation.validatestoreRequest(req);
+		
+	}
+	
 	
 	@Test
 	public void validatestoreRequestPhoneTest() {
@@ -235,6 +343,45 @@ public class ReqValidationTest {
 		store.setName("name");
 		store.setAddress("address");
 		store.setStoreid("storeid");
+		req.setStore(store);
+		requestValidatation.validatestoreRequest(req);
+		
+	}
+	
+	@Test
+	public void validateNullPhoneNoStoreRequestTest() {
+		
+		expectedEx.expect(DataNotFoundException.class);
+		expectedEx.expectMessage("Mandatory field is phonenumber and countrycode");
+		
+		Request req = new Request();
+		Store store = new Store();
+		store.setName("name");
+		store.setAddress("address");
+		store.setStoreid("storeid");
+		Phone p = new Phone();
+		p.setCc("cc");		
+		store.setPhone(p);
+		req.setStore(store);
+		requestValidatation.validatestoreRequest(req);
+		
+	}
+	
+	
+	@Test
+	public void validateNullPhoneCcStoreRequestTest() {
+		
+		expectedEx.expect(DataNotFoundException.class);
+		expectedEx.expectMessage("Mandatory field is phonenumber and countrycode");
+		
+		Request req = new Request();
+		Store store = new Store();
+		store.setName("name");
+		store.setAddress("address");
+		store.setStoreid("storeid");
+		Phone p = new Phone();		
+		p.setNumber("number");
+		store.setPhone(p);
 		req.setStore(store);
 		requestValidatation.validatestoreRequest(req);
 		
@@ -270,6 +417,20 @@ public class ReqValidationTest {
 		requestValidatation.validateUserStoreRequest(req1);
 		
 	}
+	
+	@Test
+	public void validateEmptyStoreUserStoreRequestTest() {
+		expectedEx.expect(DataNotFoundException.class);
+		expectedEx.expectMessage("Mandatory field is storeid");
+		RequestUserstore req = new RequestUserstore();
+		Userstore userstore = new Userstore();
+		userstore.setStoreid("");
+		userstore.setUserid(1);
+		req.setUserstore(userstore);
+		requestValidatation.validateUserStoreRequest(req);
+		
+	}
+	
 	
 	@Test
 	public void validateUserStoreRequestUserIdTest() {
@@ -311,20 +472,58 @@ public class ReqValidationTest {
 	}
 	
 	@Test
+	public void isUserExistEmail() {
+		expectedEx.expect(DataNotFoundException.class);
+		expectedEx.expectMessage("User already exists");
+		List<BusUser> listBus1 = new ArrayList<BusUser>();
+		BusUser bu1 = new BusUser();
+		bu1.setName("busname1");
+		bu1.setEmail("email");
+		listBus1.add(bu1);
+		
+		when(loginservice.getUserDetails(any(String.class))).thenReturn(listBus1);
+		UserRegister userRegister1 = new UserRegister();
+		userRegister1.setName("busname2");
+		userRegister1.setEmail("email");		
+		requestValidatation.isExist(userRegister1);
+	}
+	
+	
+	@Test
+	public void isUserExistPassword() {
+		expectedEx.expect(DataNotFoundException.class);
+		expectedEx.expectMessage("User already exists");
+		List<BusUser> listBus2 = new ArrayList<BusUser>();
+		BusUser bu2 = new BusUser();
+		bu2.setName("busname1");
+		bu2.setEmail("email1");
+		bu2.setPassword("password");
+		listBus2.add(bu2);
+		
+		when(loginservice.getUserDetails(any(String.class))).thenReturn(listBus2);
+		UserRegister userRegister2 = new UserRegister();
+		userRegister2.setName("busname2");
+		userRegister2.setEmail("email2");
+		userRegister2.setPassword("password");
+		requestValidatation.isExist(userRegister2);
+	}
+	
+	@Test
 	public void isUserExistNativeTest() {
 		List<BusUser> listBus = new ArrayList<BusUser>();
 		BusUser bu = new BusUser();
 		bu.setName("busname");
 		bu.setEmail("email");
-		bu.setPassword("email");
+		bu.setPassword("password");
 		listBus.add(bu);
 		
 		when(loginservice.getUserDetails(any(String.class))).thenReturn(listBus);
 		UserRegister userRegister = new UserRegister();
 		userRegister.setName("busname1");
-		userRegister.setEmail("email11");
-		userRegister.setPassword("password");
+		userRegister.setEmail("email1");
+		userRegister.setPassword("password1");
 		requestValidatation.isExist(userRegister);
+	
 	}
 	
 	
