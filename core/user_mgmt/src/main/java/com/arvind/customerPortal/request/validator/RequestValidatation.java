@@ -57,11 +57,11 @@ public class RequestValidatation {
 		logger.info("At validateUserRegisterRequest method in RequestValidatation");
 
 		if (null == userRegister.getName() || userRegister.getName().isEmpty()) {
-			logger.error("MANDATORY_FIELD_NAME");
-			throw new DataNotFoundException("MANDATORY_FIELD_NAME");
+			logger.error(MANDATORY_FIELD_NAME);
+			throw new DataNotFoundException(MANDATORY_FIELD_NAME);
 		} else if (null == userRegister.getEmail() || userRegister.getEmail().isEmpty()) {
-				logger.error("MANDATORY_FIELD_EMAIL");
-				throw new DataNotFoundException("MANDATORY_FIELD_EMAIL");
+				logger.error(MANDATORY_FIELD_EMAIL);
+				throw new DataNotFoundException(MANDATORY_FIELD_EMAIL);
 		} else if (null == userRegister.getPassword() || userRegister.getPassword().isEmpty()) {
 			logger.error("Mandatory field is password");
 			throw new DataNotFoundException("Mandatory field is password");
