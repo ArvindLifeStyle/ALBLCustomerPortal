@@ -98,7 +98,7 @@ public class InternalRegisterDaoImpl implements InternalRegisterDAO {
 				logger.info("Done user mapping to role succefully");
 			});
 			return true;
-		}catch (DaoException de) {
+		}catch (Exception de) {
 			return false;
 		}
 	}

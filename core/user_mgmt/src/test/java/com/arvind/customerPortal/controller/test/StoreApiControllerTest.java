@@ -42,9 +42,6 @@ public class StoreApiControllerTest {
 	
 	@InjectMocks
 	StoreApiController storeApiController;
-
-	@Mock
-	private StoreServiceImpl storeServiceImpl;
 	
 	@Mock
 	private IStoreService iStoreService;
@@ -213,30 +210,17 @@ public class StoreApiControllerTest {
 	public void test_create_userstore() throws Exception {
 		UserstoreEntity userstoreEntity = new UserstoreEntity();
 		userstoreEntity.setStoreId("abc");
-		//userstoreEntity.setUserId(567);
 		when(tokenParser.getRole("token")).thenReturn("ADMIN");
 		when(validator.validate("ADMIN", "create_userstore")).thenReturn(true);
-		when(iStoreService.createUserstore(any(UserstoreEntity.class))).thenReturn(false);
+		when(iStoreService.createUserstore(userstoreEntity)).thenReturn(true);
 		storeApiController.createUserstore(getUserstorePositiveRequest(),"token");
 		
+		UserstoreEntity userstoreEntity2 = new UserstoreEntity();
+		userstoreEntity.setStoreId("abcd");
+		when(iStoreService.createUserstore(userstoreEntity2)).thenReturn(false);
 		storeApiController.createUserstore(getUserstoreNativeRequest(),"token");
 		
 	}
-	
-	
-	
-/*	@Test
-	public void test_exception_create_userstore() throws Exception {
-		String str = "ADMIN";
-		UserstoreEntity userstoreEntity = null;
-		when(tokenParser.getRole("token")).thenReturn(str);
-		when(validator.validate("ADMIN", "create_userstore")).thenReturn(true);
-		when(iStoreService.createUserstore(userstoreEntity)).thenReturn(true);
-		
-		ResponseEntity responseEntity = new ResponseEntity(getFailureStatus(), HttpStatus.BAD_REQUEST);
-		assertEquals(responseEntity,storeApiController.createUserstore(getUserstorePositiveRequest(),"token"));
-		
-	}*/
 	
 	private ResponseMultiple getSearchResponse() {
 		ResponseMultiple responseMultiple = new ResponseMultiple();

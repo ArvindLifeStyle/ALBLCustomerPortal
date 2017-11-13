@@ -1,33 +1,15 @@
 package com.arvind.customerPortal.dao.test;
 
-import static org.hamcrest.CoreMatchers.startsWith;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.mockito.Matchers.anyLong;
-import static org.mockito.Matchers.anyObject;
-import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.HashMap;
-import java.util.LinkedList;
+import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
-import javax.annotation.PostConstruct;
 import javax.persistence.EntityManager;
-import javax.persistence.LockModeType;
-import javax.persistence.NoResultException;
-import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
-import javax.validation.constraints.AssertTrue;
-import javax.xml.bind.JAXBException;
-import javax.xml.datatype.DatatypeConfigurationException;
-import javax.xml.datatype.DatatypeFactory;
-import javax.xml.datatype.XMLGregorianCalendar;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -39,14 +21,11 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.runners.MockitoJUnitRunner;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.env.Environment;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import com.arvind.customerPortal.CRUD.UserPersist;
 import com.arvind.customerPortal.CRUD.UserRolePersist;
-import com.arvind.customerPortal.Dao.impl.ExternalRegisterDaoImpl;
 import com.arvind.customerPortal.Dao.impl.InternalRegisterDaoImpl;
 import com.arvind.customerPortal.domain.BusRole;
 import com.arvind.customerPortal.domain.BusUser;
@@ -142,6 +121,24 @@ public class InternalDaoRegisterImplTest {
 		userRegister.setRole("ADMIN");
 		flag=internalRegisterDaoImpl.registerInternalUser(userRegister);
 		assertEquals(true, flag);
+
+		UserRegister userRegister123=new UserRegister();
+		userRegister123.setRole("ADMIN123");
+		when(typedQueryForRole.setParameter(1, "ADMIN123")).thenReturn(typedQueryForRole);
+		when(typedQueryForRole.getResultList()).thenReturn(Collections.emptyList());
+		flag=internalRegisterDaoImpl.registerInternalUser(userRegister123);
+		assertEquals(false, flag);
+	}
+	
+	
+	@Test
+	public void RegisterExternalUserTestEX()
+	{
+		boolean flag;
+		Mockito.when(userRolePersist.saveAndFlush(new UsersRole())).thenReturn(new UsersRole());
+		UserRegister userRegister = null;
+		flag=internalRegisterDaoImpl.registerInternalUser(userRegister);
+		assertEquals(false, flag);
 	}
 		
 }
