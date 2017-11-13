@@ -11,7 +11,6 @@ import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
 
-import com.arvind.customerPortal.constants.AuthsConstants;
 import com.arvind.customerPortal.domain.BusResource;
 import com.arvind.customerPortal.domain.BusRole;
 import com.arvind.customerPortal.domain.RolesResource;
@@ -29,18 +28,17 @@ public class Validator {
 	
 
 	
-	private boolean auth=false;
+	private boolean auth;
 	
-	public boolean validate(String Role,String authResource)
+	public boolean validate(String role,String authResource)
 	{
-		
 		String queryRole=env.getProperty("role.fetch");
 		String queryResMap=env.getProperty("role.resource.fetch");
 		String resourcesQuery=env.getProperty("resource.fetch");
 		List<BusRole> roles=new ArrayList<BusRole>();
 		List<RolesResource> resourcesidList=new ArrayList<RolesResource>();
 		List<BusResource> resourceList=new ArrayList<BusResource>();
-		roles=entityManager.createQuery(queryRole, BusRole.class).setParameter(1, Role).getResultList();
+		roles=entityManager.createQuery(queryRole, BusRole.class).setParameter(1, role).getResultList();
 		if(roles.size()>0)
 		{
 			resourcesidList=entityManager.createQuery(queryResMap,RolesResource.class).setParameter(1, roles.get(0).getRoleId()).getResultList();
@@ -59,8 +57,11 @@ public class Validator {
 					resourceList.add(tempBusResource);
 				}
 				resourceList.forEach(resFinalList->{
-					if(resFinalList.getResource().equals(authResource))
+					if(resFinalList.getResource().equals(authResource)) {
 						auth=true;
+					} else {
+						auth = false;
+					}
 				});
 				
 				

@@ -20,7 +20,6 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.core.env.Environment;
 import org.springframework.test.util.ReflectionTestUtils;
-import org.springframework.util.ReflectionUtils;
 
 import com.arvind.customerPortal.domain.BusResource;
 import com.arvind.customerPortal.domain.BusRole;
@@ -112,7 +111,9 @@ public class ValidatorTest {
 		
 		boolean testFlag=false;
 		testFlag=validator.validate("ADMIN", "test");
-		assertTrue(testFlag);
+		assertTrue(testFlag);		
+		assertFalse(validator.validate("ADMIN", "test1"));
+
 	}
 	
 	@Test
