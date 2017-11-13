@@ -19,7 +19,6 @@ import com.arvind.customerPortal.Dao.InternalRegisterDAO;
 import com.arvind.customerPortal.domain.BusRole;
 import com.arvind.customerPortal.domain.BusUser;
 import com.arvind.customerPortal.domain.UsersRole;
-import com.arvind.customerPortal.exceptions.DaoException;
 import com.arvind.customerPortal.model.UserRegister;
 import com.arvind.customerPortal.security.EncryptionAgent;
 
@@ -56,8 +55,7 @@ public class InternalRegisterDaoImpl implements InternalRegisterDAO {
 			roles=entityManager.createQuery(roleQuery, BusRole.class).setParameter(1, user.getRole()).getResultList();
 
 			if(roles.isEmpty()) {
-				if(null != user && null != user.getRole())
-					logger.info(user.getRole() + " - role is not found");
+				logger.info(user.getRole() + " - role is not found");
 				return false;
 			}
 

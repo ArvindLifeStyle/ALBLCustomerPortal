@@ -1,33 +1,16 @@
 package com.arvind.customerPortal.dao.test;
 
-import static org.hamcrest.CoreMatchers.startsWith;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.mockito.Matchers.anyLong;
-import static org.mockito.Matchers.anyObject;
-import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.HashMap;
-import java.util.LinkedList;
+import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
-import javax.annotation.PostConstruct;
 import javax.persistence.EntityManager;
-import javax.persistence.LockModeType;
-import javax.persistence.NoResultException;
-import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
-import javax.validation.constraints.AssertTrue;
-import javax.xml.bind.JAXBException;
-import javax.xml.datatype.DatatypeConfigurationException;
-import javax.xml.datatype.DatatypeFactory;
-import javax.xml.datatype.XMLGregorianCalendar;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -39,24 +22,18 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.runners.MockitoJUnitRunner;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.env.Environment;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.util.ReflectionTestUtils;
 
-import com.arvind.customerPortal.CRUD.UserPersist;
 import com.arvind.customerPortal.CRUD.UserRolePersist;
-import com.arvind.customerPortal.Dao.impl.ExternalRegisterDaoImpl;
 import com.arvind.customerPortal.Dao.impl.UserDaoImpl;
 import com.arvind.customerPortal.Dto.LoginRequestDTO;
 import com.arvind.customerPortal.domain.BusRole;
 import com.arvind.customerPortal.domain.BusUser;
-import com.arvind.customerPortal.domain.UsersRole;
 import com.arvind.customerPortal.exceptions.DaoException;
+import com.arvind.customerPortal.exceptions.DataNotFoundException;
 import com.arvind.customerPortal.exceptions.UserNotFoundException;
 import com.arvind.customerPortal.model.LoginResult;
-import com.arvind.customerPortal.model.UserRegister;
 import com.arvind.customerPortal.security.EncryptionAgent;
 import com.arvind.customerPortal.security.TokenGenerator;
 import com.arvind.customerPortal.security.Validator;
@@ -164,8 +141,47 @@ public class UserDaoImplTest {
 		assertEquals("true", testResult.getOk());
 		assertEquals("request successful", testResult.getWhy());
 		assertEquals(1, testDto.getId());
+		
+		
+		//nagative role checking
+		testDto.setRole("ADMIN123");		
+		expected.expect(DataNotFoundException.class);
+		Mockito.when(validator.hasRole(1,testDto.getRole())).thenReturn(false);
+		userDaoImpl.getLoginDetails(testDto);
 
 	}
+	
+	@Test
+	public void RegisterExternalUserWrongPasswordTest() throws UserNotFoundException
+	{
+		LoginRequestDTO testDto=new LoginRequestDTO();
+		testDto.setUsername("test@test.com");
+		testDto.setPassword("testing1");
+		testDto.setId(1);
+		testDto.setRole("ADMIN");
+		
+		expected.expect(UserNotFoundException.class);		
+		Mockito.when(validator.hasRole(1,testDto.getRole())).thenReturn(true);
+		userDaoImpl.getLoginDetails(testDto);
+	}
+	
+	@Test
+	public void RegisterExternalUserEmptyTest() throws UserNotFoundException
+	{
+		LoginRequestDTO testDto=new LoginRequestDTO();
+		testDto.setUsername("test1@test.com");
+		testDto.setPassword("testing1");
+		testDto.setId(1);
+		testDto.setRole("CUSTOMER");
+		
+		// mocking entity manager of BusRole class
+		when(typedQueryForBusUser.setParameter(1, "test1@test.com")).thenReturn(typedQueryForBusUser);
+		when(typedQueryForBusUser.getResultList()).thenReturn(Collections.emptyList());
+		expected.expect(UserNotFoundException.class);		
+		Mockito.when(validator.hasRole(1,testDto.getRole())).thenReturn(true);
+		userDaoImpl.getLoginDetails(testDto);
+	}
+	
 	
 	@Test
 	public void testGetUserDetails()

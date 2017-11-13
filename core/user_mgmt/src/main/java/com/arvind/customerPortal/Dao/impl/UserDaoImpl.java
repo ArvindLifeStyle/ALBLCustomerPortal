@@ -5,7 +5,6 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.PropertySource;
@@ -43,7 +42,7 @@ public class UserDaoImpl implements UserDao {
 
 	@Autowired
 	private TokenGenerator tokenGenerator;
-	
+
 	@Autowired
 	private Validator validator;
 
@@ -61,54 +60,51 @@ public class UserDaoImpl implements UserDao {
 		// (encrypt.encode(loginDto.getPassword()))
 		userList = entityManager.createQuery(getUserQuery, BusUser.class).setParameter(1, loginDto.getUsername())
 				.getResultList();
-
-		if (userList.get(0).getActive().equals("true") && userList.get(0).getVerified().equals("true")) {
 		if ((userList.size() == 1)) {
-			String tempPass = userList.get(0).getPassword();
+			if (userList.get(0).getActive().equals("true") && userList.get(0).getVerified().equals("true")) {
 
-			if (pwdChecker.matches(loginDto.getPassword(), tempPass)) {
-				userList.forEach(user -> {
-					boolean flag=false;
-					flag=validator.hasRole(user.getUserId(),loginDto.getRole());
-					if (flag)
-					{
-					Https http$ = new Https();
-					http$.setStatus((HttpStatus.OK).toString());
-					logResult.setOk("true");
-					logResult.setHttp$(http$);
-					logResult.setWhy("request successful");
-					logResult.setUserid(user.getUserId());
-					logResult.setRole(loginDto.getRole());
-					logResult.setToken(tokenGenerator.generate(loginDto, "secret"));
-					}
-					
-					else
-					{
-						throw new DataNotFoundException("Incorrect Role");
-					}
+				String tempPass = userList.get(0).getPassword();
 
-				});
-				
-				return logResult;
+				if (pwdChecker.matches(loginDto.getPassword(), tempPass)) {
+					userList.forEach(user -> {
+						boolean flag=false;
+						flag=validator.hasRole(user.getUserId(),loginDto.getRole());
+						if (flag) {
+							Https http$ = new Https();
+							http$.setStatus((HttpStatus.OK).toString());
+							logResult.setOk("true");
+							logResult.setHttp$(http$);
+							logResult.setWhy("request successful");
+							logResult.setUserid(user.getUserId());
+							logResult.setRole(loginDto.getRole());
+							logResult.setToken(tokenGenerator.generate(loginDto, "secret"));
+						} else {
+							throw new DataNotFoundException("Incorrect Role");
+						}
 
-			} else {
-				throw new UserNotFoundException();
+					});
+
+					return logResult;
+
+				} else {
+					throw new UserNotFoundException();
+				}
+
+			}else {
+				throw new DataNotFoundException("Mandatory Active and Verify user");
 			}
 		} else
 			throw new UserNotFoundException();
-		}else {
-			throw new DataNotFoundException("Mandatory Active and Verify user");
-		}
 
 	}
-	
+
 	public List<BusUser> getUserDetails(String uname) {
 
 		List<BusUser> list = entityManager.createQuery("select e FROM BusUser e",BusUser.class).getResultList();
-		
+
 		return list;
 	}
-	
+
 	public Integer getUserByName(String uname) {
 		try {
 			Integer list = entityManager.createQuery("select e.userId FROM BusUser e where name='"+uname+"'",Integer.class).getSingleResult();
