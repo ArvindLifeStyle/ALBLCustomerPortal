@@ -111,9 +111,9 @@ public class UserDaoImpl implements UserDao {
 	
 	public Integer getUserByName(String uname) {
 		try {
-		Integer list = entityManager.createQuery("select e.userId FROM BusUser e where name='"+uname+"'",Integer.class).getSingleResult();
-		return list;
-		}catch(DaoException dao) {
+			Integer list = entityManager.createQuery("select e.userId FROM BusUser e where name='"+uname+"'",Integer.class).getSingleResult();
+			return list;
+		}catch(Exception dao) {
 			throw new DaoException("Exception raised while getting User By Name");
 		}
 	}

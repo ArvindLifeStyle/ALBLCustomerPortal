@@ -96,7 +96,7 @@ public class ExternalRegisterDaoImpl implements ExternalRegisterDAO {
 				logger.info("Done user mapping to role succefully");
 			});
 			return true;
-		} catch (DaoException e) {
+		} catch (Exception e) {
 			return false;
 		}
 	}

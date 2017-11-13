@@ -110,7 +110,7 @@ public class InternalDaoRegisterImplTest {
 	}	
 	
 	@Test
-	public void RegisterExternalUserTest()
+	public void RegisterInternalUserTest()
 	{
 		boolean flag=false;
 		Mockito.when(userRolePersist.saveAndFlush(new UsersRole())).thenReturn(new UsersRole());
@@ -132,7 +132,7 @@ public class InternalDaoRegisterImplTest {
 	
 	
 	@Test
-	public void RegisterExternalUserTestEX()
+	public void RegisterInternalUserTestEX()
 	{
 		boolean flag;
 		Mockito.when(userRolePersist.saveAndFlush(new UsersRole())).thenReturn(new UsersRole());
